@@ -8,7 +8,7 @@
 #include <chrono>
 #include <thread>
 
-const int WIDTH = 1280;
+const int WIDTH = 640;
 const int HEIGHT = 700;
 
 std::chrono::high_resolution_clock::time_point _start;

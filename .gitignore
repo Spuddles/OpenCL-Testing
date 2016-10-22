@@ -27,3 +27,16 @@
 *.exe
 *.out
 *.app
+
+# Visual Studio Temp Files
+*.suo
+*.db
+*.opendb
+*.log
+*.tlog
+*.pdb
+*.idb
+*.ilk
+*.iobj
+*.ipdb
+*.user

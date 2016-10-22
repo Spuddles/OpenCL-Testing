@@ -13,3 +13,9 @@ __kernel void hello(__global char* data)
 
 	data[ (y*xw) + x ] = x % 2;
 }
+
+__kernel void testreduction(__global char* input, __global char* output)
+{
+
+}
+
