@@ -11,7 +11,15 @@ __kernel void hello(__global char* data)
 	//data[0] = xw;
 	//data[1] = yw;
 
-	data[ (y*xw) + x ] = x % 2;
+	//data[ (y*xw) + x ] = x % 2;
+
+	for (int i=0;i<100;i++)
+	{ 
+		if (i<x || i<y)
+		{
+			data[ (y*xw) + x ] = data[ (y*xw) + x ]+1;
+		}
+	}
 }
 
 __kernel void testreduction(__global char* input, __global char* output)

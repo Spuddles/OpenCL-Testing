@@ -154,9 +154,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="StatsCounter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleTest.cl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="StatsCounter.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
