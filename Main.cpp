@@ -13,6 +13,32 @@
 const int WIDTH = 640;
 const int HEIGHT = 400;
 
+struct RGBA
+{
+	unsigned char R;
+	unsigned char G;
+	unsigned char B;
+	unsigned char A;
+};
+
+std::vector<RGBA>	vecColours{
+{ 0,0,0 },
+{ 0,0,128 },
+{ 0,128,0 },
+{ 0,128,128 },
+{ 128,0,0 },
+{ 128,0,128 },
+{ 128,128,0 },
+{ 192,192,192 },
+{ 128,128,128 },
+{ 0,0,255 },
+{ 0,255,0 },
+{ 0,255,255 },
+{ 255,0,0 },
+{ 255,0,255 },
+{ 255,255,0 },
+{ 255,255,255 } };
+
 std::chrono::high_resolution_clock::time_point _start;
 
 void startTimer()
@@ -115,8 +141,6 @@ int main()
 
 	cl::Program::Sources source(1, std::make_pair(str.c_str(), str.size()));
 
-	cl::Buffer memBuf(context, CL_MEM_READ_WRITE, WIDTH*HEIGHT);
-
 	cl::Program program_ = cl::Program(context, source);
 	if (program_.build(devices) != CL_SUCCESS)
 	{
@@ -129,22 +153,46 @@ int main()
 
 		std::string buildStatus;
 		program_.getBuildInfo<std::string>(devices[0], CL_PROGRAM_BUILD_STATUS, &buildStatus);
+
+		std::cin.get();
+		return -1;
 	}
 
+	// Allocate the RGBA frame buffer
+	cl::Buffer frameBuf(context, CL_MEM_READ_WRITE, WIDTH*HEIGHT * sizeof(RGBA));
+	// Allocate the space for the console colours
+	cl::Buffer colourBuf(context, CL_MEM_READ_WRITE, 16 * sizeof(RGBA));
+
+
+	// Setup and run the kernel
 	cl::Kernel kernel(program_, "hello", &err);
-	kernel.setArg(0, memBuf);
+	kernel.setArg(0, frameBuf);
 
 	cl::Event event;
 	cl::CommandQueue queue(context, devices[0], 0, &err);
 
 	// Initialise the values in our shared buffer
-	char *data = (char*) queue.enqueueMapBuffer(memBuf, CL_TRUE, CL_MAP_WRITE, 0, WIDTH*HEIGHT);
+	RGBA *data = (RGBA*) queue.enqueueMapBuffer(frameBuf, CL_TRUE, CL_MAP_WRITE, 0, WIDTH*HEIGHT);
 	for (int i = 0; i < (WIDTH*HEIGHT); ++i)
 	{
-		data[i] = 23;
+		data[i].R = rand() % 256;
+		data[i].G = rand() % 256;
+		data[i].B = rand() % 256;
+		data[i].A = 0;
 	}
 	// Not sure if I need to unmap this if I want to use it later
-	queue.enqueueUnmapMemObject(memBuf, data);
+	queue.enqueueUnmapMemObject(frameBuf, data);
+
+	RGBA *coldata = (RGBA*) queue.enqueueMapBuffer(colourBuf, CL_TRUE, CL_MAP_WRITE, 0, 16*sizeof(RGBA));
+	for (int i = 0; i < 16; ++i)
+	{
+		coldata[i].R = vecColours[i].R;
+		coldata[i].G = vecColours[i].G;
+		coldata[i].B = vecColours[i].B;
+		coldata[i].A = 0;
+	}
+	// Not sure if I need to unmap this if I want to use it later
+	queue.enqueueUnmapMemObject(colourBuf, coldata);
 
 	// Create an object to hold our perf numbers
 	StatsCounter sc;

@@ -1,4 +1,12 @@
-__kernel void hello(__global char* data)
+struct RGBA
+{
+	unsigned char R;
+	unsigned char G;
+	unsigned char B;
+	unsigned char A;
+};
+
+__kernel void hello(__global struct RGBA* data)
 {
 	// Find out our X and Y co-ordinates for this pixel 
 	int x = get_global_id(0);
@@ -8,18 +16,12 @@ __kernel void hello(__global char* data)
 	int xw = get_global_size(0);
 	int yw = get_global_size(1);
 
-	//data[0] = xw;
-	//data[1] = yw;
+	// Calculate the luminance of the pixel
+	float lum = (0.2126f*data[ (y*xw) + x ].R) + (0.7152f*data[ (y*xw) + x ].G) + (0.0722f*data[ (y*xw) + x ].B);
 
-	//data[ (y*xw) + x ] = x % 2;
+	// Look for the closest console colour
 
-	for (int i=0;i<100;i++)
-	{ 
-		if (i<x || i<y)
-		{
-			data[ (y*xw) + x ] = data[ (y*xw) + x ]+1;
-		}
-	}
+	data[ (y*xw) + x ].A = (unsigned char)lum;
 }
 
 __kernel void testreduction(__global char* input, __global char* output)
