@@ -31,7 +31,8 @@ void StatsCounter::AddValue(unsigned int value)
 
 unsigned int StatsCounter::GetAverage()
 {
-	return static_cast<unsigned int>(_total / _count);
+	if (_count > 0)
+		return static_cast<unsigned int>(_total / _count);
 }
 
 unsigned int StatsCounter::GetCount()

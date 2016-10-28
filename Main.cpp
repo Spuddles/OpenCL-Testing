@@ -163,11 +163,12 @@ int main()
 	// Allocate the space for the console colours
 	cl::Buffer colourBuf(context, CL_MEM_READ_WRITE, 16 * sizeof(RGBA));
 
-
 	// Setup and run the kernel
 	cl::Kernel kernel(program_, "hello", &err);
 	kernel.setArg(0, frameBuf);
+	kernel.setArg(1, colourBuf);
 
+	// Create the queue that all actions are performed on
 	cl::Event event;
 	cl::CommandQueue queue(context, devices[0], 0, &err);
 
@@ -201,13 +202,17 @@ int main()
 	{
 		startTimer();
 
-		queue.enqueueNDRangeKernel(
+		if (CL_SUCCESS != queue.enqueueNDRangeKernel(
 			kernel,
 			cl::NullRange,
-			cl::NDRange(WIDTH,HEIGHT),
+			cl::NDRange(WIDTH, HEIGHT),
 			cl::NullRange,
 			NULL,
-			&event);
+			&event))
+		{
+			std::cout << "Failed to enqueue the kernel to run" << std::endl;
+			break;
+		}
 
 		event.wait();
 		
