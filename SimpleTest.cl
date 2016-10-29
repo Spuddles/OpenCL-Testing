@@ -29,7 +29,7 @@ __kernel void hello(__global struct RGBA* data, __constant struct RGBA* colours)
 	float closestDist = 99999.9f;
 	for (int i=0;i<16;i++)
 	{
-		float temp = (colours[i].R-p->R); // + pow((colours[i].G-p->G),2) + pow((colours[i].B-p->B),2);
+		float temp = 123.4f; //pow((colours[i].R-p->R),2) + pow((colours[i].G-p->G),2) + pow((colours[i].B-p->B),2);
 		temp = sqrt(temp);
 		
 		if (temp < closestDist)
@@ -41,8 +41,8 @@ __kernel void hello(__global struct RGBA* data, __constant struct RGBA* colours)
 	data[offset].A = (unsigned char)closest;
 }
 
-__kernel void testreduction(__global char* input, __global char* output)
+/*__kernel void testreduction(__global char* input, __global char* output)
 {
 
-}
+}*/
 

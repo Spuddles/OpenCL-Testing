@@ -1,6 +1,8 @@
 //#define CL_USE_DEPRECIATED_OPENCL_2_0_APIS
 //#define __CL_ENABLE_EXCEPTIONS
 
+#define CL_USE_DEPRECATED_OPENCL_1_2_APIS
+
 #include <CL/cl.hpp>
 #include <iostream>
 #include <fstream>
@@ -52,9 +54,7 @@ unsigned int getTimer()
 
 	std::chrono::microseconds us = std::chrono::duration_cast<std::chrono::microseconds>(_end - _start);
 
-	//std::cout << "microseconds=" << us.count() << std::endl;
-
-	return us.count();
+	return static_cast<unsigned int>(us.count());
 }
 
 std::string LoadFile(const std::string &filename)
@@ -122,7 +122,7 @@ int main()
 	}
 
 	// Iterate through the platforms the print out their details
-	dumpPlatformDetails(platforms);
+	//dumpPlatformDetails(platforms);
 
 	cl_context_properties properties [] = { CL_CONTEXT_PLATFORM, (cl_context_properties) (platforms[0])(), 0 };
 	cl::Context context(CL_DEVICE_TYPE_GPU, properties);
@@ -142,7 +142,7 @@ int main()
 	cl::Program::Sources source(1, std::make_pair(str.c_str(), str.size()));
 
 	cl::Program program_ = cl::Program(context, source);
-	if (program_.build(devices) != CL_SUCCESS)
+	if (program_.build(devices, "-g") != CL_SUCCESS)
 	{
 		std::string buildOptions;
 		program_.getBuildInfo<std::string>(devices[0], CL_PROGRAM_BUILD_OPTIONS, &buildOptions);
@@ -198,7 +198,7 @@ int main()
 	// Create an object to hold our perf numbers
 	StatsCounter sc;
 
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		startTimer();
 
@@ -218,7 +218,7 @@ int main()
 		
 		sc.AddValue(getTimer());
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+//		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 
 	sc.DumpValues();

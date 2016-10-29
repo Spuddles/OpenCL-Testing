@@ -33,6 +33,8 @@ unsigned int StatsCounter::GetAverage()
 {
 	if (_count > 0)
 		return static_cast<unsigned int>(_total / _count);
+	else
+		return 0;
 }
 
 unsigned int StatsCounter::GetCount()
