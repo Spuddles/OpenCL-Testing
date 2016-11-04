@@ -164,7 +164,10 @@ int main()
 	cl::Buffer colourBuf(context, CL_MEM_READ_WRITE, 16 * sizeof(RGBA));
 
 	// Setup and run the kernel
-	cl::Kernel kernel(program_, "hello", &err);
+	//cl::Kernel kernel(program_, "generateLuminance", &err);
+	cl::Kernel kernel(program_, "generateConsoleColour", &err);
+
+	//kernel.getInfo(
 	kernel.setArg(0, frameBuf);
 	kernel.setArg(1, colourBuf);
 
@@ -198,7 +201,7 @@ int main()
 	// Create an object to hold our perf numbers
 	StatsCounter sc;
 
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 100; i++)
 	{
 		startTimer();
 
@@ -218,7 +221,7 @@ int main()
 		
 		sc.AddValue(getTimer());
 
-//		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 
 	sc.DumpValues();
