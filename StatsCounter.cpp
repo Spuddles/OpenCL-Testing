@@ -2,7 +2,7 @@
 #include <iostream>
 
 StatsCounter::StatsCounter():
-	 _minimum(-1)
+	 _minimum(UINT_MAX)
 	,_maximum(0)
 	,_total(0)
 	,_count(0)
