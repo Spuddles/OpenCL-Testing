@@ -101,31 +101,10 @@ int main()
 		
 	std::vector<cl::Device> devices = context.getInfo<CL_CONTEXT_DEVICES>();
 		
-	// See what devices we have to use
-	//dumpDeviceDetails(devices);
-
-	// Create a local copy of the source code
-	std::string str = Utils::loadFile("SimpleTest.cl");
-	if (str.empty())
+	ConverterToLargeBlocks conv;
+	if (!conv.initialise(context, devices))
 	{
-		std::cout << "Failed to load the openCL kernel file" << std::endl;
-	}
-
-	cl::Program::Sources source(1, std::make_pair(str.c_str(), str.size()));
-
-	cl::Program program = cl::Program(context, source);
-	if (program.build(devices, "-g") != CL_SUCCESS)
-	{
-		std::string buildOptions;
-		program.getBuildInfo<std::string>(devices[0], CL_PROGRAM_BUILD_OPTIONS, &buildOptions);
-
-		std::string log;
-		program.getBuildInfo<std::string>(devices[0], CL_PROGRAM_BUILD_LOG, &log);
-		std::cout << "Build Log:" << log << std::endl;
-
-		std::string buildStatus;
-		program.getBuildInfo<std::string>(devices[0], CL_PROGRAM_BUILD_STATUS, &buildStatus);
-
+		std::cout << "Failed to load ConverterToLargeBlocks kernel" << std::endl;
 		std::cin.get();
 		return -1;
 	}
@@ -134,16 +113,17 @@ int main()
 	cl::Buffer frameBuf(context, CL_MEM_READ_WRITE, WIDTH*HEIGHT * sizeof(RGBA));
 	// Allocate the space for the console colours
 	cl::Buffer colourBuf(context, CL_MEM_READ_WRITE, 16 * sizeof(RGBA));
-
-	//ConverterToLargeBlocks conv();
+	// Allocate the space for the resulting console buffer
+	cl::Buffer outputBuf(context, CL_MEM_READ_WRITE, 80 * 50 * 2);
 
 	// Setup and run the kernel
 	//cl::Kernel kernel(program_, "generateLuminance", &err);
-	cl::Kernel kernel(program, "generateConsoleColour", &err);
+	cl::Kernel kernel(conv.getProgram(), "convertToLargeBlocks", &err);
 
 	//kernel.getInfo(
 	kernel.setArg(0, frameBuf);
 	kernel.setArg(1, colourBuf);
+	kernel.setArg(2, outputBuf);
 
 	// Create the queue that all actions are performed on
 	cl::CommandQueue queue(context, devices[0], 0, &err);
