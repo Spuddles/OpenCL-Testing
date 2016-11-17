@@ -153,14 +153,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ConverterToLargeBlocks.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="StatsCounter.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ConverterToLargeBlocks.cl" />
     <None Include="SimpleTest.cl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConverterToLargeBlocks.h" />
     <ClInclude Include="StatsCounter.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

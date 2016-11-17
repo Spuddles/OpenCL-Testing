@@ -5,12 +5,12 @@
 
 #include <CL/cl.hpp>
 #include <iostream>
-#include <fstream>
-#include <sstream>
-#include <chrono>
 #include <thread>
 
+#include "Timer.h"
 #include "StatsCounter.h"
+#include "ConverterToLargeBlocks.h"
+#include "Utils.h"
 
 const int WIDTH = 640;
 const int HEIGHT = 400;
@@ -41,35 +41,6 @@ std::vector<RGBA>	vecColours{
 { 255,255,0 },
 { 255,255,255 } };
 
-std::chrono::high_resolution_clock::time_point _start;
-
-void startTimer()
-{
-	_start = std::chrono::high_resolution_clock::now();
-}
-
-unsigned int getTimer()
-{
-	std::chrono::high_resolution_clock::time_point _end = std::chrono::high_resolution_clock::now();
-
-	std::chrono::microseconds us = std::chrono::duration_cast<std::chrono::microseconds>(_end - _start);
-
-	return static_cast<unsigned int>(us.count());
-}
-
-std::string LoadFile(const std::string &filename)
-{
-	std::ifstream input(filename);
-	if (input)
-	{
-		std::ostringstream contents;
-
-		contents << input.rdbuf();
-
-		return contents.str();	
-	}
-	return "";
-}
 
 void dumpPlatformDetails(const std::vector<cl::Platform> &platforms)
 {
@@ -109,6 +80,7 @@ void dumpDeviceDetails(const std::vector<cl::Device> &devices)
 		std::cout << std::endl;
 	}
 }
+
 int main()
 {
 	cl_int err = CL_SUCCESS;
@@ -133,7 +105,7 @@ int main()
 	//dumpDeviceDetails(devices);
 
 	// Create a local copy of the source code
-	std::string str = LoadFile("SimpleTest.cl");
+	std::string str = Utils::loadFile("SimpleTest.cl");
 	if (str.empty())
 	{
 		std::cout << "Failed to load the openCL kernel file" << std::endl;
@@ -141,18 +113,18 @@ int main()
 
 	cl::Program::Sources source(1, std::make_pair(str.c_str(), str.size()));
 
-	cl::Program program_ = cl::Program(context, source);
-	if (program_.build(devices, "-g") != CL_SUCCESS)
+	cl::Program program = cl::Program(context, source);
+	if (program.build(devices, "-g") != CL_SUCCESS)
 	{
 		std::string buildOptions;
-		program_.getBuildInfo<std::string>(devices[0], CL_PROGRAM_BUILD_OPTIONS, &buildOptions);
+		program.getBuildInfo<std::string>(devices[0], CL_PROGRAM_BUILD_OPTIONS, &buildOptions);
 
 		std::string log;
-		program_.getBuildInfo<std::string>(devices[0], CL_PROGRAM_BUILD_LOG, &log);
+		program.getBuildInfo<std::string>(devices[0], CL_PROGRAM_BUILD_LOG, &log);
 		std::cout << "Build Log:" << log << std::endl;
 
 		std::string buildStatus;
-		program_.getBuildInfo<std::string>(devices[0], CL_PROGRAM_BUILD_STATUS, &buildStatus);
+		program.getBuildInfo<std::string>(devices[0], CL_PROGRAM_BUILD_STATUS, &buildStatus);
 
 		std::cin.get();
 		return -1;
@@ -163,16 +135,17 @@ int main()
 	// Allocate the space for the console colours
 	cl::Buffer colourBuf(context, CL_MEM_READ_WRITE, 16 * sizeof(RGBA));
 
+	//ConverterToLargeBlocks conv();
+
 	// Setup and run the kernel
 	//cl::Kernel kernel(program_, "generateLuminance", &err);
-	cl::Kernel kernel(program_, "generateConsoleColour", &err);
+	cl::Kernel kernel(program, "generateConsoleColour", &err);
 
 	//kernel.getInfo(
 	kernel.setArg(0, frameBuf);
 	kernel.setArg(1, colourBuf);
 
 	// Create the queue that all actions are performed on
-	cl::Event event;
 	cl::CommandQueue queue(context, devices[0], 0, &err);
 
 	// Initialise the values in our shared buffer
@@ -201,9 +174,10 @@ int main()
 	// Create an object to hold our perf numbers
 	StatsCounter sc;
 
+	cl::Event event;
 	for (int i = 0; i < 100; i++)
 	{
-		startTimer();
+		Timer::startTimer();
 
 		if (CL_SUCCESS != queue.enqueueNDRangeKernel(
 			kernel,
@@ -219,7 +193,7 @@ int main()
 
 		event.wait();
 		
-		sc.AddValue(getTimer());
+		sc.AddValue(Timer::getTimer());
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
