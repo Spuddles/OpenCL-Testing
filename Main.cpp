@@ -11,9 +11,12 @@
 #include "StatsCounter.h"
 #include "ConverterToLargeBlocks.h"
 #include "Utils.h"
+#include "OutputHelper.h"
 
-const int WIDTH = 640;
-const int HEIGHT = 400;
+const int PIXEL_WIDTH = 640;
+const int PIXEL_HEIGHT = 400;
+const int CONSOLE_WIDTH = 80;
+const int CONSOLE_HEIGHT = 50;
 
 struct RGBA
 {
@@ -41,46 +44,6 @@ std::vector<RGBA>	vecColours{
 { 255,255,0 },
 { 255,255,255 } };
 
-
-void dumpPlatformDetails(const std::vector<cl::Platform> &platforms)
-{
-	for (cl::Platform p : platforms)
-	{
-		std::string name;
-		p.getInfo(CL_PLATFORM_NAME, &name);
-
-		std::string profile;
-		p.getInfo(CL_PLATFORM_PROFILE, &profile);
-
-		std::string vendor;
-		p.getInfo(CL_PLATFORM_VENDOR, &vendor);
-
-		std::string version;
-		p.getInfo(CL_PLATFORM_VERSION, &version);
-
-		std::cout << "Platform:" << name;
-		std::cout << " Profile:" << profile;
-		std::cout << " Vendor:" << vendor;
-		std::cout << " Version:" << version << std::endl;
-	}
-}
-
-void dumpDeviceDetails(const std::vector<cl::Device> &devices)
-{
-	for (cl::Device d : devices)
-	{
-		std::string name;
-		d.getInfo(CL_DEVICE_NAME, &name);
-
-		cl_bool available;
-		d.getInfo(CL_DEVICE_AVAILABLE, &available);
-
-		std::cout << "Device:" << name;
-		std::cout << " Available:" << available;
-		std::cout << std::endl;
-	}
-}
-
 int main()
 {
 	cl_int err = CL_SUCCESS;
@@ -92,9 +55,6 @@ int main()
 		std::cout << "Platform size 0\n";
 		return -1;	
 	}
-
-	// Iterate through the platforms the print out their details
-	//dumpPlatformDetails(platforms);
 
 	cl_context_properties properties [] = { CL_CONTEXT_PLATFORM, (cl_context_properties) (platforms[0])(), 0 };
 	cl::Context context(CL_DEVICE_TYPE_GPU, properties);
@@ -110,27 +70,24 @@ int main()
 	}
 
 	// Allocate the RGBA frame buffer
-	cl::Buffer frameBuf(context, CL_MEM_READ_WRITE, WIDTH*HEIGHT * sizeof(RGBA));
+	cl::Buffer frameBuf(context, CL_MEM_READ_WRITE, PIXEL_WIDTH*PIXEL_HEIGHT * sizeof(RGBA));
 	// Allocate the space for the console colours
 	cl::Buffer colourBuf(context, CL_MEM_READ_WRITE, 16 * sizeof(RGBA));
 	// Allocate the space for the resulting console buffer
-	cl::Buffer outputBuf(context, CL_MEM_READ_WRITE, 80 * 50 * 2);
+	cl::Buffer outputBuf(context, CL_MEM_READ_WRITE, CONSOLE_WIDTH * CONSOLE_HEIGHT * 2);
 
-	// Setup and run the kernel
-	//cl::Kernel kernel(program_, "generateLuminance", &err);
-	cl::Kernel kernel(conv.getProgram(), "convertToLargeBlocks", &err);
-
-	//kernel.getInfo(
-	kernel.setArg(0, frameBuf);
-	kernel.setArg(1, colourBuf);
-	kernel.setArg(2, outputBuf);
+	if (!conv.buildKernel(frameBuf, colourBuf, outputBuf))
+	{
+		std::cout << "Failed to create the kernel" << std::endl;
+		return -1;
+	}
 
 	// Create the queue that all actions are performed on
 	cl::CommandQueue queue(context, devices[0], 0, &err);
 
 	// Initialise the values in our shared buffer
-	RGBA *data = (RGBA*) queue.enqueueMapBuffer(frameBuf, CL_TRUE, CL_MAP_WRITE, 0, WIDTH*HEIGHT);
-	for (int i = 0; i < (WIDTH*HEIGHT); ++i)
+	RGBA *data = (RGBA*) queue.enqueueMapBuffer(frameBuf, CL_TRUE, CL_MAP_WRITE, 0, PIXEL_WIDTH*PIXEL_HEIGHT);
+	for (int i = 0; i < (PIXEL_WIDTH*PIXEL_HEIGHT); ++i)
 	{
 		data[i].R = rand() % 256;
 		data[i].G = rand() % 256;
@@ -151,6 +108,9 @@ int main()
 	// Not sure if I need to unmap this if I want to use it later
 	queue.enqueueUnmapMemObject(colourBuf, coldata);
 
+	// Get a pointer to the output buffer
+	unsigned char* outputPtr = (unsigned char*) queue.enqueueMapBuffer(outputBuf, CL_TRUE, CL_MAP_READ, 0, CONSOLE_WIDTH*CONSOLE_HEIGHT*2);
+
 	// Create an object to hold our perf numbers
 	StatsCounter sc;
 
@@ -160,9 +120,9 @@ int main()
 		Timer::startTimer();
 
 		if (CL_SUCCESS != queue.enqueueNDRangeKernel(
-			kernel,
+			conv.getKernel(),
 			cl::NullRange,
-			cl::NDRange(WIDTH, HEIGHT),
+			cl::NDRange(CONSOLE_WIDTH, CONSOLE_HEIGHT),
 			cl::NullRange,
 			NULL,
 			&event))

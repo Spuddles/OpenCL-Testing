@@ -1,8 +1,8 @@
 /*
- * Convert a 640*400 grib of RGBA pixels into a 80*50 set of
+ * Convert a 640*400 grid of RGBA pixels into a 80*50 set of
  * console characters and attribute values
  */
-__kernel void convertToLargeBlocks(__global uchar4 *input, __global uchar2 *output, __constant uchar4 *colours)
+__kernel void convertToLargeBlocks(__global uchar4 *input, __constant uchar4 *colours, __global uchar2 *output )
 { 
 	// Find out our X and Y co-ordinates for this pixel 
 	int x = get_global_id(0);
@@ -21,7 +21,9 @@ __kernel void convertToLargeBlocks(__global uchar4 *input, __global uchar2 *outp
 	{
 		for (int j=0;j<8;j++)
 		{
-			
+			// For now, just fill everything with stars
+			output[offset].x = '*';
+			output[offset].y = 15;
 		}
 	}
 } 

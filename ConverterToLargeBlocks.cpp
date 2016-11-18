@@ -27,7 +27,28 @@ bool ConverterToLargeBlocks::initialise(const cl::Context &context, const std::v
 	return true;
 }
 
+bool ConverterToLargeBlocks::buildKernel(cl::Buffer &frameBuf, cl::Buffer &colourBuf, cl::Buffer &outputBuf)
+{
+	cl_int	err;
+	
+	_kernel = cl::Kernel(_program, "convertToLargeBlocks", &err);
+
+	if (err != CL_SUCCESS)
+		return false;
+
+	_kernel.setArg(0, frameBuf);
+	_kernel.setArg(1, colourBuf);
+	_kernel.setArg(2, outputBuf);
+
+	return true;
+}
+
 const cl::Program& ConverterToLargeBlocks::getProgram() const
 {
 	return _program;
+}
+
+const cl::Kernel& ConverterToLargeBlocks::getKernel() const
+{
+	return _kernel;
 }

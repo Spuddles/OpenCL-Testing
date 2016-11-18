@@ -9,8 +9,12 @@ public:
 	~ConverterToLargeBlocks();
 
 	bool initialise(const cl::Context &context, const std::vector<cl::Device> &devices);
+	bool buildKernel(cl::Buffer &frameBuf, cl::Buffer &colourBuf, cl::Buffer &outputBuf);
+
 	const cl::Program& getProgram() const;
+	const cl::Kernel& getKernel() const;
 private:
 	cl::Program _program;
+	cl::Kernel	_kernel;
 };
 
