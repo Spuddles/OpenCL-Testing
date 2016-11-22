@@ -11,6 +11,7 @@ OutputHelper::~OutputHelper()
 
 void OutputHelper::dumpPlatformDetails(const std::vector<cl::Platform> &platforms)
 {
+	int platformCount = 0;
 	for (cl::Platform p : platforms)
 	{
 		std::string name;
@@ -25,7 +26,7 @@ void OutputHelper::dumpPlatformDetails(const std::vector<cl::Platform> &platform
 		std::string version;
 		p.getInfo(CL_PLATFORM_VERSION, &version);
 
-		std::cout << "Platform:" << name;
+		std::cout << "Platform " << platformCount++ << ":" << name;
 		std::cout << " Profile:" << profile;
 		std::cout << " Vendor:" << vendor;
 		std::cout << " Version:" << version << std::endl;
@@ -34,6 +35,7 @@ void OutputHelper::dumpPlatformDetails(const std::vector<cl::Platform> &platform
 
 void OutputHelper::dumpDeviceDetails(const std::vector<cl::Device> &devices)
 {
+	int deviceCount = 0;
 	for (cl::Device d : devices)
 	{
 		std::string name;
@@ -42,7 +44,7 @@ void OutputHelper::dumpDeviceDetails(const std::vector<cl::Device> &devices)
 		cl_bool available;
 		d.getInfo(CL_DEVICE_AVAILABLE, &available);
 
-		std::cout << "Device:" << name;
+		std::cout << "Device " << deviceCount++ << ":" << name;
 		std::cout << " Available:" << available;
 		std::cout << std::endl;
 	}

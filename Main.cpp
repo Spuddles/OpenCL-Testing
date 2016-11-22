@@ -12,6 +12,7 @@
 #include "ConverterToLargeBlocks.h"
 #include "Utils.h"
 #include "OutputHelper.h"
+#include "Display.h"
 
 const int PIXEL_WIDTH = 640;
 const int PIXEL_HEIGHT = 400;
@@ -50,6 +51,7 @@ int main()
 
 	std::vector<cl::Platform> platforms;
 	cl::Platform::get(&platforms);
+	OutputHelper::dumpPlatformDetails(platforms);
 	if (platforms.size() == 0)
 	{
 		std::cout << "Platform size 0\n";
@@ -57,10 +59,11 @@ int main()
 	}
 
 	cl_context_properties properties [] = { CL_CONTEXT_PLATFORM, (cl_context_properties) (platforms[0])(), 0 };
-	cl::Context context(CL_DEVICE_TYPE_GPU, properties);
+	cl::Context context(CL_DEVICE_TYPE_CPU, properties);
 		
 	std::vector<cl::Device> devices = context.getInfo<CL_CONTEXT_DEVICES>();
-		
+	OutputHelper::dumpDeviceDetails(devices);
+
 	ConverterToLargeBlocks conv;
 	if (!conv.initialise(context, devices))
 	{
@@ -87,13 +90,24 @@ int main()
 
 	// Initialise the values in our shared buffer
 	RGBA *data = (RGBA*) queue.enqueueMapBuffer(frameBuf, CL_TRUE, CL_MAP_WRITE, 0, PIXEL_WIDTH*PIXEL_HEIGHT);
+
+/*	// Initialise to random RGB pixels
 	for (int i = 0; i < (PIXEL_WIDTH*PIXEL_HEIGHT); ++i)
 	{
 		data[i].R = rand() % 256;
 		data[i].G = rand() % 256;
 		data[i].B = rand() % 256;
 		data[i].A = 0;
+	}*/
+
+	// Load a RAW picture from a file
+	if (!Utils::loadBinaryFile("FontTesting.data", (char*)data))
+	{
+		std::cout << "Failed to load the raw picture file" << std::endl;
+		std::cin.get();
+		return -1;
 	}
+
 	// Not sure if I need to unmap this if I want to use it later
 	queue.enqueueUnmapMemObject(frameBuf, data);
 
@@ -111,11 +125,15 @@ int main()
 	// Get a pointer to the output buffer
 	unsigned char* outputPtr = (unsigned char*) queue.enqueueMapBuffer(outputBuf, CL_TRUE, CL_MAP_READ, 0, CONSOLE_WIDTH*CONSOLE_HEIGHT*2);
 
+	Display disp;
+	disp.FillBuffer('-', 7);
+	disp.UpdateConsole();
+
 	// Create an object to hold our perf numbers
 	StatsCounter sc;
 
 	cl::Event event;
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		Timer::startTimer();
 
@@ -133,6 +151,9 @@ int main()
 
 		event.wait();
 		
+		disp.CopyToBuffer((char*)outputPtr);
+		disp.UpdateConsole();
+
 		sc.AddValue(Timer::getTimer());
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));

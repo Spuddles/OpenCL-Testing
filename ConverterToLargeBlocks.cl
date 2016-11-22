@@ -17,13 +17,38 @@ __kernel void convertToLargeBlocks(__global uchar4 *input, __constant uchar4 *co
 	// We need to process a 8*8 block to get the average colour
 	unsigned int r=0,g=0,b=0;
 
+
+	__global uchar4 *pixelOffset = input;
+	pixelOffset += (x*8)+(y*640*8);
+
 	for (int i=0;i<8;i++)
 	{
 		for (int j=0;j<8;j++)
 		{
+			r += pixelOffset->x;
+			g += pixelOffset->y;
+			b += pixelOffset->z;
+
 			// For now, just fill everything with stars
-			output[offset].x = '*';
-			output[offset].y = 15;
+			//output[offset].x = '*';
+			//output[offset].y = 15;
 		}
+		pixelOffset += 640;
+	}
+
+	// Now calculate the average
+	r /= 64;
+	g /= 64;
+	b /= 64;
+
+	if (r+g+b > 100)
+	{
+		output[offset].x = '*';
+		output[offset].y = 15;
+	}
+	else
+	{
+		output[offset].x = ' ';
+		output[offset].y = 0;
 	}
 } 

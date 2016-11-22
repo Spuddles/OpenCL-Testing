@@ -154,6 +154,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ConverterToLargeBlocks.cpp" />
+    <ClCompile Include="Display.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="OutputHelper.cpp" />
     <ClCompile Include="StatsCounter.cpp" />
@@ -166,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConverterToLargeBlocks.h" />
+    <ClInclude Include="Display.h" />
     <ClInclude Include="OutputHelper.h" />
     <ClInclude Include="StatsCounter.h" />
     <ClInclude Include="Timer.h" />

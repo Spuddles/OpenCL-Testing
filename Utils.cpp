@@ -43,13 +43,15 @@ char* Utils::loadBinaryFile(const std::string &filename)
 
 bool Utils::loadBinaryFile(const std::string &filename, char* buffer)
 {
-	std::ifstream input(filename, std::ios_base::binary || std::ios_base::ate);
+	std::ifstream input(filename, std::ios_base::binary | std::ios_base::ate);
 	if (input)
 	{
 		size_t filesize = input.tellg();
 		input.seekg(0);
 
 		input.read(buffer, filesize);
+
+		input.close();
 
 		return true;
 	}
