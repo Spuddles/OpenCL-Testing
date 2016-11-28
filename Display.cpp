@@ -97,3 +97,9 @@ void Display::DrawTestImage()
         SetChar(i%16, i/16, i, 15);
     }
 }
+
+void Display::MoveCursor(unsigned int x, unsigned int y)
+{
+	COORD pos{ (SHORT)x,(SHORT)y };
+	SetConsoleCursorPosition(_hConsole, pos);
+}

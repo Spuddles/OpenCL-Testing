@@ -17,7 +17,7 @@ bool ConverterToLargeBlocks::initialise(const cl::Context &context, const std::v
 	cl::Program::Sources source(1, std::make_pair(sourceStr.c_str(), sourceStr.size()));
 
 	_program = cl::Program(context, source);
-	if (_program.build(devices, "-g") != CL_SUCCESS)
+	if (_program.build(devices, "") != CL_SUCCESS)
 	{
 		std::string log;
 		_program.getBuildInfo<std::string>(devices[0], CL_PROGRAM_BUILD_LOG, &log);
@@ -31,7 +31,8 @@ bool ConverterToLargeBlocks::buildKernel(cl::Buffer &frameBuf, cl::Buffer &colou
 {
 	cl_int	err;
 	
-	_kernel = cl::Kernel(_program, "convertToLargeBlocks", &err);
+//	_kernel = cl::Kernel(_program, "convertToLargeBlocks", &err);
+	_kernel = cl::Kernel(_program, "convertToSmallBlocks", &err);
 
 	if (err != CL_SUCCESS)
 		return false;

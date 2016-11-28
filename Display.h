@@ -20,7 +20,7 @@ public:
 
     void    SetChar(int x, int y, char ch, char attrib);
     void    DrawTestImage();
-
+	void	MoveCursor(unsigned int x, unsigned int y);
 
 private:
 

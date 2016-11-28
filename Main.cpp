@@ -101,7 +101,7 @@ int main()
 	}*/
 
 	// Load a RAW picture from a file
-	if (!Utils::loadBinaryFile("FontTesting.data", (char*)data))
+	if (!Utils::loadBinaryFile("Images\\BW-Dragon.data", (char*)data))
 	{
 		std::cout << "Failed to load the raw picture file" << std::endl;
 		std::cin.get();
@@ -133,7 +133,7 @@ int main()
 	StatsCounter sc;
 
 	cl::Event event;
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		Timer::startTimer();
 
@@ -150,15 +150,15 @@ int main()
 		}
 
 		event.wait();
-		
+		sc.AddValue(Timer::getTimer());
+
 		disp.CopyToBuffer((char*)outputPtr);
 		disp.UpdateConsole();
 
-		sc.AddValue(Timer::getTimer());
-
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	}
 
+	disp.MoveCursor(0, 0);
 	sc.DumpValues();
 
 	std::cin.get();
