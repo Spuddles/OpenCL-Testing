@@ -1,4 +1,43 @@
 /*
+ * For the given RGB value, find the closest console colour
+ */
+uchar findClosestColour(uchar r, uchar g, uchar b, __constant uchar4 *colours)
+{
+	float closest = 999999999;
+	uint  colourOffset = 0;
+
+	for (int i=0;i<15;i++)
+	{
+		float dist = (colours[i].x-r)*(colours[i].x-r) +
+					(colours[i].y-g)*(colours[i].y-g) +
+					(colours[i].z-b)*(colours[i].z-b);
+
+		if (dist < closest)
+		{
+			closest = dist;
+			colourOffset = i;
+		}
+	}
+	return colourOffset;
+}
+
+uchar findClosestGrey(uchar r, uchar g, uchar b)
+{
+	// Find the brightness of this RGB colour
+
+	float lum = (0.2126f*r) + (0.7152f*g) + (0.0722f*b);
+
+	if (lum > 192.0f)
+		return 15;
+	if (lum > 128.0f)
+		return 7;
+	if (lum > 64.0f)
+		return 8;
+
+	return 0;
+}
+
+/*
  * Convert a 640*400 grid of RGBA pixels into a 80*50 set of
  * console characters and attribute values
  */
@@ -37,10 +76,12 @@ __kernel void convertToLargeBlocks(__global uchar4 *input, __constant uchar4 *co
 	g /= 64;
 	b /= 64;
 
-	if (r+g+b > 100)
+	uchar colour = findClosestGrey(r,g,b);
+
+	if (r+g+b > 0)
 	{
 		output[offset].x = 219;
-		output[offset].y = 15;
+		output[offset].y = colour;
 	}
 	else
 	{
@@ -97,15 +138,24 @@ __kernel void convertToSmallBlocks(__global uchar4 *input, __constant uchar4 *co
 	}
 
 	// Now calculate the average
-	r1 /= 64;
-	g1 /= 64;
-	b1 /= 64;
+	r1 /= 32;
+	g1 /= 32;
+	b1 /= 32;
 
-	r2 /= 64;
-	g2 /= 64;
-	b2 /= 64;
+	r2 /= 32;
+	g2 /= 32;
+	b2 /= 32;
 
-	if (r1+g1+b1 > 100)
+//	uchar topColour = findClosestColour(r1,g1,b1, colours); 
+//	uchar bottomColour = findClosestColour(r2,g2,b2, colours); 
+
+	uchar topColour =    findClosestGrey(r1,g1,b1); 
+	uchar bottomColour = findClosestGrey(r2,g2,b2); 
+
+	output[offset].x = 223;
+	output[offset].y = topColour + (bottomColour<<4);
+
+	/*if (r1+g1+b1 > 100)
 	{
 		if (r2+g2+b2 > 100)
 		{
@@ -134,5 +184,5 @@ __kernel void convertToSmallBlocks(__global uchar4 *input, __constant uchar4 *co
 			output[offset].x = ' ';
 			output[offset].y = 0;
 		}
-	}
+	}*/
 } 
