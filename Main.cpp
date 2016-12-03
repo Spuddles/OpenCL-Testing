@@ -101,7 +101,8 @@ int main()
 	}*/
 
 	// Load a RAW picture from a file
-	if (!Utils::loadBinaryFile("Images\\BW-Dragon.data", (char*)data))
+	if (!Utils::loadBinaryFile("Images\\BW-Swirls.data", (char*) data))
+	//if (!Utils::loadBinaryFile("Images\\RGB-Megaman.data", (char*) data))
 	{
 		std::cout << "Failed to load the raw picture file" << std::endl;
 		std::cin.get();
@@ -158,7 +159,7 @@ int main()
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	}
 
-	disp.MoveCursor(0, 0);
+	disp.MoveCursor(0, 50);
 	sc.DumpValues();
 
 	std::cin.get();

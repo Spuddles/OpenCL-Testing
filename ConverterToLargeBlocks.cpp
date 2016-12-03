@@ -31,8 +31,8 @@ bool ConverterToLargeBlocks::buildKernel(cl::Buffer &frameBuf, cl::Buffer &colou
 {
 	cl_int	err;
 	
-//	_kernel = cl::Kernel(_program, "convertToLargeBlocks", &err);
-	_kernel = cl::Kernel(_program, "convertToSmallBlocks", &err);
+	_kernel = cl::Kernel(_program, "convertToLargeBlocks", &err);
+//	_kernel = cl::Kernel(_program, "convertToSmallBlocks", &err);
 
 	if (err != CL_SUCCESS)
 		return false;
