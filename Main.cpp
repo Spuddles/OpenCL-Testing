@@ -13,6 +13,7 @@
 #include "Utils.h"
 #include "OutputHelper.h"
 #include "Display.h"
+#include "CharSelection.h"
 
 const int PIXEL_WIDTH = 640;
 const int PIXEL_HEIGHT = 400;
@@ -47,6 +48,16 @@ std::vector<RGBA>	vecColours{
 
 int main()
 {
+	CharSelection cs;
+
+	cs.Init();
+	cs.Run();
+
+	std::cin.get();
+	return 0;
+
+
+
 	cl_int err = CL_SUCCESS;
 
 	std::vector<cl::Platform> platforms;
