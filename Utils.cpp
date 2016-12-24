@@ -26,8 +26,8 @@ std::string Utils::loadFile(const std::string &filename)
 
 char* Utils::loadBinaryFile(const std::string &filename)
 {
-	std::ifstream input(filename, std::ios_base::binary || std::ios_base::ate);
-	if (input)
+	std::ifstream input(filename, std::ios_base::binary | std::ios_base::ate);
+	if (!input.bad())
 	{
 		size_t filesize = input.tellg();
 		input.seekg(0);
