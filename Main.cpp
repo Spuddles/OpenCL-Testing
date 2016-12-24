@@ -48,10 +48,28 @@ std::vector<RGBA>	vecColours{
 
 int main()
 {
+	Display disp;
+	disp.FillBuffer('-', 7);
+	disp.UpdateConsole();
+	std::this_thread::sleep_for(std::chrono::seconds(1));
+
 	CharSelection cs;
 
 	cs.Init();
-	cs.Run();
+
+	StatsCounter sc2;
+
+	for (int i = 0; i < 256; i++)
+	{
+		Timer::startTimer();
+		cs.Run(disp.GetScreenBuffer(), i);
+		sc2.AddValue(Timer::getTimer());
+
+		disp.UpdateConsole();
+		//std::this_thread::sleep_for(std::chrono::milliseconds(5));
+	}
+	disp.MoveCursor(0, 51);
+	sc2.DumpValues();
 
 	std::cin.get();
 	return 0;
@@ -136,10 +154,6 @@ int main()
 
 	// Get a pointer to the output buffer
 	unsigned char* outputPtr = (unsigned char*) queue.enqueueMapBuffer(outputBuf, CL_TRUE, CL_MAP_READ, 0, CONSOLE_WIDTH*CONSOLE_HEIGHT*2);
-
-	Display disp;
-	disp.FillBuffer('-', 7);
-	disp.UpdateConsole();
 
 	// Create an object to hold our perf numbers
 	StatsCounter sc;
