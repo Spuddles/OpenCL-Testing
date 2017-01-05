@@ -39,7 +39,7 @@
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>../../../../Desktop/OpenCL-Testing/Images/BW-Dragon.jpg</pixmap>
+       <pixmap>../Images/RGB-Megaman.jpg</pixmap>
       </property>
      </widget>
     </item>

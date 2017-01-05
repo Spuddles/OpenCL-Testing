@@ -4,6 +4,8 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_convertertester.h"
 
+#include "../Effects/Effect.h"
+
 class ConverterTester : public QMainWindow
 {
 	Q_OBJECT
@@ -17,6 +19,10 @@ public:
 	void	applyEffect();
 
 private:
+	void	populateEffects();
+
+	std::map<QString, Effect*>	m_mapEffects;
+
 	Ui::ConverterTesterClass ui;
 };
 
