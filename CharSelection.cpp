@@ -1,5 +1,5 @@
 #include "CharSelection.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -17,7 +17,7 @@ CharSelection::~CharSelection()
 void CharSelection::Init()
 {
 	// Load the bitmap font file
-	m_CharSet = (unsigned char*)Utils::loadBinaryFile("Charset.data");
+	m_CharSet = (unsigned char*)Utils::loadBinaryFile("Images//Charset.data");
 
 	// Load the test image
 //	m_Image = (unsigned char*) Utils::loadBinaryFile("Images//BW-Circles.data");

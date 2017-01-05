@@ -7,10 +7,11 @@
 #include <iostream>
 #include <thread>
 
-#include "Timer.h"
-#include "StatsCounter.h"
+#include "Utils/Timer.h"
+#include "Utils/StatsCounter.h"
+#include "Utils/Structs.h"
 #include "ConverterToLargeBlocks.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 #include "OutputHelper.h"
 #include "Display.h"
 #include "CharSelection.h"
@@ -19,32 +20,6 @@ const int PIXEL_WIDTH = 640;
 const int PIXEL_HEIGHT = 400;
 const int CONSOLE_WIDTH = 80;
 const int CONSOLE_HEIGHT = 50;
-
-struct RGBA
-{
-	unsigned char R;
-	unsigned char G;
-	unsigned char B;
-	unsigned char A;
-};
-
-std::vector<RGBA>	vecColours{
-{ 0,0,0 },
-{ 0,0,128 },
-{ 0,128,0 },
-{ 0,128,128 },
-{ 128,0,0 },
-{ 128,0,128 },
-{ 128,128,0 },
-{ 192,192,192 },
-{ 128,128,128 },
-{ 0,0,255 },
-{ 0,255,0 },
-{ 0,255,255 },
-{ 255,0,0 },
-{ 255,0,255 },
-{ 255,255,0 },
-{ 255,255,255 } };
 
 int main()
 {
