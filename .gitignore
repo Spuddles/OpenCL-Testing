@@ -41,3 +41,6 @@
 *.ipdb
 *.user
 *.filters
+
+# QT generated files
+*/GeneratedFiles/
