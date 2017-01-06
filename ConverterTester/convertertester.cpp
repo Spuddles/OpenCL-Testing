@@ -4,6 +4,7 @@
 #include "../Effects/GreyScale.h"
 #include "../Effects/LumGreyScale.h"
 #include "../Effects/ConsoleColours.h"
+#include "../Effects/Fade.h"
 
 ConverterTester::ConverterTester(QWidget *parent)
 	: QMainWindow(parent)
@@ -35,6 +36,12 @@ void ConverterTester::populateEffects()
 
 	// Convert to console colours
 	effect = new ConsoleColours();
+	name = effect->getName().c_str();
+	ui.comboBox->addItem(name);
+	m_mapEffects[name] = effect;
+
+	// Convert to console colours
+	effect = new Fade(-30);
 	name = effect->getName().c_str();
 	ui.comboBox->addItem(name);
 	m_mapEffects[name] = effect;

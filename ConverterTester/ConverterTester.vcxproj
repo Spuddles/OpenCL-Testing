@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Effects\ConsoleColours.cpp" />
+    <ClCompile Include="..\Effects\Fade.cpp" />
     <ClCompile Include="..\Effects\GreyScale.cpp" />
     <ClCompile Include="..\Effects\LumGreyScale.cpp" />
     <ClCompile Include="convertertester.cpp" />
@@ -208,6 +209,7 @@
   <ItemGroup>
     <ClInclude Include="..\Effects\ConsoleColours.h" />
     <ClInclude Include="..\Effects\Effect.h" />
+    <ClInclude Include="..\Effects\Fade.h" />
     <ClInclude Include="..\Effects\GreyScale.h" />
     <ClInclude Include="..\Effects\LumGreyScale.h" />
     <ClInclude Include="GeneratedFiles\ui_convertertester.h" />
