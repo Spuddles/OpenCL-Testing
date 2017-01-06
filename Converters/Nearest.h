@@ -2,14 +2,14 @@
 #include "Converter.h"
 
 class Nearest :
-	public Effect
+	public Converter
 {
 public:
-	Nearest(int offset);
+	Nearest();
 	~Nearest();
 
 	bool		initialise();
-	bool		convert(RGBA *input, unsigned char *output) = 0;
+	bool		convert(RGBA *input, CHAR_INFO *output);
 	std::string	getName();
 };
 

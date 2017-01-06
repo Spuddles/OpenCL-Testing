@@ -15,12 +15,13 @@ bool Nearest::initialise()
 	return true;
 }
 
-bool Nearest::convert(RGBA *input, unsigned char *output)
+bool Nearest::convert(RGBA *input, CHAR_INFO *output)
 {
 	for (int i = 0; i < 640 * 400; i++)
 	{
 		RGBA rgba = (*input++);
-		*(output++) = rgba.A;
+		output->Char.AsciiChar = '*';
+		output++;
 	}
 	return true;
 }
