@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>666</width>
-    <height>1012</height>
+    <width>676</width>
+    <height>1475</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -44,12 +44,12 @@
      </widget>
     </item>
     <item>
-     <widget class="QComboBox" name="comboBox"/>
+     <widget class="QComboBox" name="effectComboBox"/>
     </item>
     <item>
      <widget class="QPushButton" name="applyEffectButton">
       <property name="text">
-       <string>Apply</string>
+       <string>Apply Effect</string>
       </property>
      </widget>
     </item>
@@ -63,6 +63,23 @@
       </property>
      </widget>
     </item>
+    <item>
+     <widget class="QComboBox" name="converterComboBox"/>
+    </item>
+    <item>
+     <widget class="QPushButton" name="applyConverterButton">
+      <property name="text">
+       <string>Apply Converter</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -70,8 +87,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>666</width>
-     <height>31</height>
+     <width>676</width>
+     <height>38</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -139,12 +156,28 @@
    <slot>applyEffect()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>563</x>
-     <y>503</y>
+     <x>581</x>
+     <y>593</y>
     </hint>
     <hint type="destinationlabel">
      <x>635</x>
      <y>497</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>applyConverterButton</sender>
+   <signal>clicked()</signal>
+   <receiver>ConverterTesterClass</receiver>
+   <slot>applyConverter()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>337</x>
+     <y>985</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>337</x>
+     <y>688</y>
     </hint>
    </hints>
   </connection>
@@ -153,5 +186,6 @@
   <signal>signal1()</signal>
   <slot>loadImage()</slot>
   <slot>applyEffect()</slot>
+  <slot>applyConverter()</slot>
  </slots>
 </ui>

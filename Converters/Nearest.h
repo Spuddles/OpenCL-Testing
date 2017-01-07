@@ -11,5 +11,10 @@ public:
 	bool		initialise();
 	bool		convert(RGBA *input, CHAR_INFO *output);
 	std::string	getName();
+
+private:
+	int			findClosest(char *image);
+
+	char		*m_CharSet;
 };
 

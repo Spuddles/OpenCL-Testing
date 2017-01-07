@@ -6,11 +6,14 @@
 #include "../Effects/ConsoleColours.h"
 #include "../Effects/Fade.h"
 
+#include "../Converters/Nearest.h"
+
 ConverterTester::ConverterTester(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
 	populateEffects();
+	populateConverters();
 }
 
 ConverterTester::~ConverterTester()
@@ -19,32 +22,44 @@ ConverterTester::~ConverterTester()
 
 void ConverterTester::populateEffects()
 {
-	// Create an instance of each effect and add it to the coolection
+	// Create an instance of each effect and add it to the collection
 	// and populate the combo box
 
 	// Basic grayscale
 	Effect *effect = new GreyScale();
 	QString name = effect->getName().c_str();
-	ui.comboBox->addItem(name);
+	ui.effectComboBox->addItem(name);
 	m_mapEffects[name] = effect;
 
 	// Luminence based greyscale
 	effect = new LumGreyScale();
 	name = effect->getName().c_str();
-	ui.comboBox->addItem(name);
+	ui.effectComboBox->addItem(name);
 	m_mapEffects[name] = effect;
 
 	// Convert to console colours
 	effect = new ConsoleColours();
 	name = effect->getName().c_str();
-	ui.comboBox->addItem(name);
+	ui.effectComboBox->addItem(name);
 	m_mapEffects[name] = effect;
 
 	// Convert to console colours
 	effect = new Fade(-30);
 	name = effect->getName().c_str();
-	ui.comboBox->addItem(name);
+	ui.effectComboBox->addItem(name);
 	m_mapEffects[name] = effect;
+}
+
+void ConverterTester::populateConverters()
+{
+	// Create an instance of every converter and add them
+	// to the combo box and collection
+
+	// Closest letter with black background
+	Converter *converter = new Nearest();
+	QString name = converter->getName().c_str();
+	ui.converterComboBox->addItem(name);
+	m_mapConverters[name] = converter;
 }
 
 void ConverterTester::loadImage()
@@ -62,7 +77,7 @@ void ConverterTester::loadImage()
 void ConverterTester::applyEffect()
 {
 	// Find out which effect I am using
-	QString name = ui.comboBox->currentText();
+	QString name = ui.effectComboBox->currentText();
 	Effect *effect = m_mapEffects[name];
 
 	// Grab the picture data from the before pixmap
@@ -83,5 +98,9 @@ void ConverterTester::applyEffect()
 
 	// Apply effect
 	ui.afterImage->setPixmap(QPixmap::fromImage(outputImage));
+}
+
+void ConverterTester::applyConverter()
+{
 }
 
