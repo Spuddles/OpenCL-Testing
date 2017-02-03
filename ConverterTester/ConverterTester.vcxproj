@@ -146,6 +146,7 @@
     <ClCompile Include="..\Effects\Fade.cpp" />
     <ClCompile Include="..\Effects\GreyScale.cpp" />
     <ClCompile Include="..\Effects\LumGreyScale.cpp" />
+    <ClCompile Include="..\Generators\ColourTest.cpp" />
     <ClCompile Include="convertertester.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_convertertester.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -215,6 +216,8 @@
     <ClInclude Include="..\Effects\Fade.h" />
     <ClInclude Include="..\Effects\GreyScale.h" />
     <ClInclude Include="..\Effects\LumGreyScale.h" />
+    <ClInclude Include="..\Generators\ColourTest.h" />
+    <ClInclude Include="..\Generators\Generator.h" />
     <ClInclude Include="GeneratedFiles\ui_convertertester.h" />
   </ItemGroup>
   <ItemGroup>
@@ -242,7 +245,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties MocDir=".\GeneratedFiles\$(ConfigurationName)" UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" lupdateOptions="" lupdateOnBuild="0" lreleaseOptions="" Qt5Version_x0020_x64="Qt 5.6.0" MocOptions="" />
+      <UserProperties MocDir=".\GeneratedFiles\$(ConfigurationName)" UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" lupdateOptions="" lupdateOnBuild="0" lreleaseOptions="" Qt5Version_x0020_x64="msvc2015_64" MocOptions="" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

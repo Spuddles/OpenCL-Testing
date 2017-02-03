@@ -9,6 +9,10 @@
 
 #include "../Converters/Nearest.h"
 
+#include "../Generators/ColourTest.h"
+
+#include "../Utils/Timer.h"
+
 ConverterTester::ConverterTester(QWidget *parent)
 	: QMainWindow(parent)
 {
@@ -19,6 +23,16 @@ ConverterTester::ConverterTester(QWidget *parent)
 	// Hook up the timer object
 	m_Timer = new QTimer(this);
 	connect(m_Timer, SIGNAL(timeout()), this, SLOT(updateAnimation()));
+
+	std::chrono::system_clock::time_point tp = Timer::getCurrentTime();
+	std::chrono::system_clock::time_point tp2 = Timer::getCurrentTime();
+
+	Timer::sleepMS(33);
+
+	float duration = Timer::getDuration(tp);
+
+	duration += 1.0f;
+
 }
 
 ConverterTester::~ConverterTester()
@@ -121,6 +135,9 @@ void ConverterTester::toggleAnimation()
 	{
 		m_Timer->start(10);
 		ui.startAnimation->setText("Stop Animation");
+
+		// Record the current time as the start time we offset from
+		//m_StartTime = 
 	}
 }
 

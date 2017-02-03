@@ -23,3 +23,30 @@ unsigned int Timer::getTimer()
 
 	return static_cast<unsigned int>(us.count());
 }
+
+std::chrono::system_clock::time_point Timer::getCurrentTime()
+{
+	return std::chrono::system_clock().now();
+}
+
+float Timer::getDuration(std::chrono::system_clock::time_point start)
+{
+	// Get the current time and subtract our orginal time to get the duration
+	std::chrono::system_clock::time_point tp = std::chrono::system_clock().now();
+
+	std::chrono::milliseconds duration = std::chrono::duration_cast<std::chrono::milliseconds>(tp - start);
+
+	return duration.count();
+}
+
+void Timer::sleepMS(unsigned int ms)
+{
+	std::chrono::system_clock::time_point now = std::chrono::system_clock().now();
+
+	std::chrono::system_clock::time_point end = now + std::chrono::milliseconds(ms);
+
+	while (end > now)
+	{
+		now = std::chrono::system_clock().now();
+	}
+}

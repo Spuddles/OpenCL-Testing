@@ -1,6 +1,7 @@
 #ifndef CONVERTERTESTER_H
 #define CONVERTERTESTER_H
 
+#include <chrono>
 #include <QtWidgets/QMainWindow>
 #include <QTimer>
 #include "ui_convertertester.h"
@@ -33,6 +34,7 @@ private:
 	Ui::ConverterTesterClass ui;
 
 	QTimer	*m_Timer;
+	std::chrono::system_clock::time_point	m_StartTime;
 };
 
 #endif // CONVERTERTESTER_H
