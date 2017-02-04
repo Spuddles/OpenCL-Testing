@@ -147,6 +147,7 @@
     <ClCompile Include="..\Effects\GreyScale.cpp" />
     <ClCompile Include="..\Effects\LumGreyScale.cpp" />
     <ClCompile Include="..\Generators\ColourTest.cpp" />
+    <ClCompile Include="..\Generators\StaticImage.cpp" />
     <ClCompile Include="convertertester.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_convertertester.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -218,6 +219,7 @@
     <ClInclude Include="..\Effects\LumGreyScale.h" />
     <ClInclude Include="..\Generators\ColourTest.h" />
     <ClInclude Include="..\Generators\Generator.h" />
+    <ClInclude Include="..\Generators\StaticImage.h" />
     <ClInclude Include="GeneratedFiles\ui_convertertester.h" />
   </ItemGroup>
   <ItemGroup>

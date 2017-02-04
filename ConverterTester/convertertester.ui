@@ -34,16 +34,6 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QLabel" name="beforeImage">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap>../Images/RGB-Megaman.jpg</pixmap>
-      </property>
-     </widget>
-    </item>
-    <item>
      <widget class="QPushButton" name="startAnimation">
       <property name="text">
        <string>Start Animation</string>
@@ -51,14 +41,17 @@
      </widget>
     </item>
     <item>
-     <widget class="QComboBox" name="effectComboBox"/>
+     <widget class="QComboBox" name="generatorComboBox"/>
     </item>
     <item>
-     <widget class="QPushButton" name="applyEffectButton">
+     <widget class="QLabel" name="beforeImage">
       <property name="text">
-       <string>Apply Effect</string>
+       <string/>
       </property>
      </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="effectComboBox"/>
     </item>
     <item>
      <widget class="QLabel" name="afterImage">
@@ -72,13 +65,6 @@
     </item>
     <item>
      <widget class="QComboBox" name="converterComboBox"/>
-    </item>
-    <item>
-     <widget class="QPushButton" name="applyConverterButton">
-      <property name="text">
-       <string>Apply Converter</string>
-      </property>
-     </widget>
     </item>
     <item>
      <widget class="QLabel" name="label">
@@ -95,14 +81,13 @@
      <x>0</x>
      <y>0</y>
      <width>666</width>
-     <height>31</height>
+     <height>38</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionLoad_Image"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -121,7 +106,6 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionLoad_Image"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionLoad_Image">
@@ -140,54 +124,6 @@
   <include location="convertertester.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>mainToolBar</sender>
-   <signal>actionTriggered(QAction*)</signal>
-   <receiver>ConverterTesterClass</receiver>
-   <slot>loadImage()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>68</x>
-     <y>49</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>226</x>
-     <y>686</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>applyEffectButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ConverterTesterClass</receiver>
-   <slot>applyEffect()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>594</x>
-     <y>592</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>635</x>
-     <y>497</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>applyConverterButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ConverterTesterClass</receiver>
-   <slot>applyConverter()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>350</x>
-     <y>1050</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>337</x>
-     <y>688</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>startAnimation</sender>
    <signal>clicked()</signal>

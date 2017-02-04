@@ -10,35 +10,77 @@
 #include "../Converters/Nearest.h"
 
 #include "../Generators/ColourTest.h"
+#include "../Generators/StaticImage.h"
 
 #include "../Utils/Timer.h"
+
+#include <sstream>
 
 ConverterTester::ConverterTester(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
+	populateGenerators();
 	populateEffects();
 	populateConverters();
 
 	// Hook up the timer object
 	m_Timer = new QTimer(this);
 	connect(m_Timer, SIGNAL(timeout()), this, SLOT(updateAnimation()));
-
-	std::chrono::system_clock::time_point tp = Timer::getCurrentTime();
-	std::chrono::system_clock::time_point tp2 = Timer::getCurrentTime();
-
-	Timer::sleepMS(33);
-
-	float duration = Timer::getDuration(tp);
-
-	duration += 1.0f;
-
 }
 
 ConverterTester::~ConverterTester()
 {
 }
 
+void ConverterTester::populateGenerators()
+{
+	// Create an instance of every generator and add them
+	// to the combo box and collection
+
+	// Colour Sweep
+	Generator *generator = new ColourTest();
+	QString name;
+	if (generator->initialise())
+	{
+		name = generator->getName().c_str();
+		ui.generatorComboBox->addItem(name);
+		m_mapGenerators[name] = generator;
+	}
+
+	generator = new StaticImage("../Images/RGB-Megaman.data");
+	if (generator->initialise())
+	{
+		name = generator->getName().c_str();
+		ui.generatorComboBox->addItem(name);
+		m_mapGenerators[name] = generator;
+	}
+
+	generator = new StaticImage("../Images/RGB-RainbowSwirls.data");
+	if (generator->initialise())
+	{
+		name = generator->getName().c_str();
+		ui.generatorComboBox->addItem(name);
+		m_mapGenerators[name] = generator;
+	}
+
+	generator = new StaticImage("../Images/BW-Dragon.data");
+	if (generator->initialise())
+	{
+		name = generator->getName().c_str();
+		ui.generatorComboBox->addItem(name);
+		m_mapGenerators[name] = generator;
+	}
+
+	generator = new StaticImage("../Images/BW-RevisionLogo.data");
+	if (generator->initialise())
+	{
+		name = generator->getName().c_str();
+		ui.generatorComboBox->addItem(name);
+		m_mapGenerators[name] = generator;
+	}
+
+}
 void ConverterTester::populateEffects()
 {
 	// Create an instance of each effect and add it to the collection
@@ -93,27 +135,16 @@ void ConverterTester::loadImage()
 	}
 }
 
-void ConverterTester::applyEffect()
+void ConverterTester::applyEffect(RGBA *input)
 {
 	// Find out which effect I am using
 	QString name = ui.effectComboBox->currentText();
 	Effect *effect = m_mapEffects[name];
 
-	// Grab the picture data from the before pixmap
-	const QPixmap *before = ui.beforeImage->pixmap();
-
-	// Make sure it's in the correct format
-	QImage inputImage = before->toImage();
-	if (inputImage.format() != QImage::Format_RGBA8888)
-	{
-		inputImage = inputImage.convertToFormat(QImage::Format_RGBA8888);
-	}
-	uchar* input = inputImage.bits();
-
-	QImage outputImage = before->toImage().convertToFormat(QImage::Format_RGBA8888);
+	QImage outputImage(640,400, QImage::Format_RGBA8888);
 	uchar* output = outputImage.bits();
 
-	effect->run((RGBA*)input, (RGBA*)output);
+	effect->run(input, (RGBA*)output);
 
 	// Apply effect
 	ui.afterImage->setPixmap(QPixmap::fromImage(outputImage));
@@ -137,7 +168,7 @@ void ConverterTester::toggleAnimation()
 		ui.startAnimation->setText("Stop Animation");
 
 		// Record the current time as the start time we offset from
-		//m_StartTime = 
+		m_StartTime = Timer::getCurrentTime();
 	}
 }
 
@@ -145,35 +176,42 @@ void ConverterTester::updateAnimation()
 {
 	static int count = 0;
 
-	// Grab the picture data from the before pixmap
-	const QPixmap *before = ui.beforeImage->pixmap();
+	// Record start time to measure whole process time
+	std::chrono::system_clock::time_point start = Timer::getCurrentTime();
 
-	// Make sure it's in the correct format
-	QImage inputImage = before->toImage();
-	if (inputImage.format() != QImage::Format_RGBA8888)
-	{
-		inputImage = inputImage.convertToFormat(QImage::Format_RGBA8888);
-	}
-/*	uchar* input = inputImage.bits();
+	// Calculate the time duration
+	float time = Timer::getDuration(m_StartTime)/1000.0f;
 
-	// Fade everything darker
-	RGBA *pixels = (RGBA*) input;
-	for (int i = 0; i < 640 * 400; i++)
-	{
-		pixels->R = max(0, pixels->R-1);
-		pixels->G = max(0, pixels->G-1);
-		pixels->B = max(0, pixels->B-1);
-		pixels++;
-	}*/
+	// Create an image to write to later
+	QImage	image(640,400, QImage::Format_RGBA8888);
+	RGBA *imageRGBA = (RGBA*)image.bits();
 
-	QPainter painter(&inputImage);
-	painter.setBrush(Qt::SolidPattern);
-	painter.setPen(Qt::white);
-	painter.fillRect(100+count, 100+count, 100, 100, Qt::white);
-	painter.end();
+	// GENERATOR CODE
 
-	// Apply effect
-	ui.beforeImage->setPixmap(QPixmap::fromImage(inputImage));
+	// Find out which generator I am using
+	QString name = ui.generatorComboBox->currentText();
+	Generator *generator = m_mapGenerators[name];
+
+	// Perform the image creation 
+	generator->run(time, imageRGBA);
+
+	// Update the GUI with the new image
+	ui.beforeImage->setPixmap(QPixmap::fromImage(image));
+
+	// EFFECT CODE
+	applyEffect(imageRGBA);
+
+
+	// CONVERTER CODE
+
+
+	// Update windows title to show MS frame time
+	float ms = Timer::getDuration(start);
+	std::stringstream ss;
+	ss << "Frametime = " << ms << "ms";
+
+	this->setWindowTitle(QString(ss.str().c_str()));
+
 
 	count++;
 }
