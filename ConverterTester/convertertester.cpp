@@ -3,6 +3,7 @@
 #include <QPainter>
 
 #include "../Effects/GreyScale.h"
+#include "../Effects/BlackAndWhite.h"
 #include "../Effects/LumGreyScale.h"
 #include "../Effects/ConsoleColours.h"
 #include "../Effects/Fade.h"
@@ -98,6 +99,12 @@ void ConverterTester::populateEffects()
 	ui.effectComboBox->addItem(name);
 	m_mapEffects[name] = effect;
 
+	// Black and white
+	effect = new BlackAndWhite();
+	name = effect->getName().c_str();
+	ui.effectComboBox->addItem(name);
+	m_mapEffects[name] = effect;
+
 	// Convert to console colours
 	effect = new ConsoleColours();
 	name = effect->getName().c_str();
@@ -117,10 +124,14 @@ void ConverterTester::populateConverters()
 	// to the combo box and collection
 
 	// Closest letter with black background
+	QString name;
 	Converter *converter = new Nearest();
-	QString name = converter->getName().c_str();
-	ui.converterComboBox->addItem(name);
-	m_mapConverters[name] = converter;
+	if (converter->initialise())
+	{
+		name = converter->getName().c_str();
+		ui.converterComboBox->addItem(name);
+		m_mapConverters[name] = converter;
+	}
 }
 
 void ConverterTester::loadImage()
@@ -135,23 +146,37 @@ void ConverterTester::loadImage()
 	}
 }
 
-void ConverterTester::applyEffect(RGBA *input)
+void ConverterTester::applyEffect(RGBA *input, QImage &outputImage)
 {
 	// Find out which effect I am using
 	QString name = ui.effectComboBox->currentText();
 	Effect *effect = m_mapEffects[name];
 
-	QImage outputImage(640,400, QImage::Format_RGBA8888);
-	uchar* output = outputImage.bits();
-
-	effect->run(input, (RGBA*)output);
+	effect->run(input, (RGBA*)outputImage.bits());
 
 	// Apply effect
 	ui.afterImage->setPixmap(QPixmap::fromImage(outputImage));
 }
 
-void ConverterTester::applyConverter()
+void ConverterTester::applyConverter(RGBA *image)
 {
+	// Find out which converter I am using
+	QString name = ui.converterComboBox->currentText();
+	Converter *converter = m_mapConverters[name];
+
+	QImage outputImage(640, 400, QImage::Format_RGBA8888);
+	uchar* output = outputImage.bits();
+
+	CHAR_INFO console[80 * 50];
+
+	// Convert into console chars
+	converter->convert(image, console);
+
+	// Convert back into a bitmap for testing
+	converter->convertBack(console, (RGBA*)output);
+
+	// Apply effect
+	ui.converterImage->setPixmap(QPixmap::fromImage(outputImage));
 }
 
 void ConverterTester::toggleAnimation()
@@ -199,19 +224,26 @@ void ConverterTester::updateAnimation()
 	ui.beforeImage->setPixmap(QPixmap::fromImage(image));
 
 	// EFFECT CODE
-	applyEffect(imageRGBA);
+	QImage effectImage(640, 400, QImage::Format_RGBA8888);
+	uchar* effectOutput = effectImage.bits();
 
+	if (ui.enableEffectCheckBox->isChecked())
+	{
+		applyEffect(imageRGBA, effectImage);
+	}
 
 	// CONVERTER CODE
+	if (ui.enableConverterCheckBox->isChecked())
+	{
+		applyConverter((RGBA*)effectOutput);
+	}
 
-
-	// Update windows title to show MS frame time
+	// Update status bar to show MS frame time
 	float ms = Timer::getDuration(start);
 	std::stringstream ss;
 	ss << "Frametime = " << ms << "ms";
 
-	this->setWindowTitle(QString(ss.str().c_str()));
-
+	ui.statusBar->showMessage(QString(ss.str().c_str()));
 
 	count++;
 }

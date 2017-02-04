@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Converters\Nearest.cpp" />
+    <ClCompile Include="..\Effects\BlackAndWhite.cpp" />
     <ClCompile Include="..\Effects\ConsoleColours.cpp" />
     <ClCompile Include="..\Effects\Fade.cpp" />
     <ClCompile Include="..\Effects\GreyScale.cpp" />
@@ -212,6 +213,7 @@
   <ItemGroup>
     <ClInclude Include="..\Converters\Converter.h" />
     <ClInclude Include="..\Converters\Nearest.h" />
+    <ClInclude Include="..\Effects\BlackAndWhite.h" />
     <ClInclude Include="..\Effects\ConsoleColours.h" />
     <ClInclude Include="..\Effects\Effect.h" />
     <ClInclude Include="..\Effects\Fade.h" />

@@ -20,8 +20,8 @@ public:
 
 	public Q_SLOTS:
 	void	loadImage();
-	void	applyEffect(RGBA *image);
-	void	applyConverter();
+	void	applyEffect(RGBA *image, QImage &outputImage);
+	void	applyConverter(RGBA *image);
 	void	toggleAnimation();
 	void	updateAnimation();
 

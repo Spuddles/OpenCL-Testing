@@ -10,10 +10,12 @@ public:
 
 	bool		initialise();
 	bool		convert(RGBA *input, CHAR_INFO *output);
+	bool		convertBack(CHAR_INFO *input, RGBA *output);
+
 	std::string	getName();
 
 private:
-	int			findClosest(char *image);
+	int			findClosest(unsigned char *image);
 
 	char		*m_CharSet;
 };
