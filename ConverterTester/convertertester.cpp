@@ -12,6 +12,7 @@
 
 #include "../Generators/ColourTest.h"
 #include "../Generators/StaticImage.h"
+#include "../Generators/BounceImage.h"
 
 #include "../Utils/Timer.h"
 
@@ -21,6 +22,7 @@ ConverterTester::ConverterTester(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
+	ui.horizontalLayout->setSizeConstraint(QLayout::SetFixedSize);
 	populateGenerators();
 	populateEffects();
 	populateConverters();
@@ -74,6 +76,14 @@ void ConverterTester::populateGenerators()
 	}
 
 	generator = new StaticImage("../Images/BW-RevisionLogo.data");
+	if (generator->initialise())
+	{
+		name = generator->getName().c_str();
+		ui.generatorComboBox->addItem(name);
+		m_mapGenerators[name] = generator;
+	}
+
+	generator = new BounceImage();
 	if (generator->initialise())
 	{
 		name = generator->getName().c_str();
@@ -246,4 +256,22 @@ void ConverterTester::updateAnimation()
 	ui.statusBar->showMessage(QString(ss.str().c_str()));
 
 	count++;
+}
+
+void ConverterTester::toggleZoom()
+{
+	if (m_ZoomedIn)
+	{
+		// Zoom out 
+		ui.converterImage->setMinimumSize(QSize(640, 400));
+		ui.converterImage->setScaledContents(false);
+		ui.centralWidget->resize(QSize(100, 100));
+		m_ZoomedIn = false;
+	}
+	else
+	{
+		ui.converterImage->setMinimumSize(QSize(1280, 800));
+		ui.converterImage->setScaledContents(true);
+		m_ZoomedIn = true;
+	}
 }

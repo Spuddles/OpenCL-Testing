@@ -147,6 +147,7 @@
     <ClCompile Include="..\Effects\Fade.cpp" />
     <ClCompile Include="..\Effects\GreyScale.cpp" />
     <ClCompile Include="..\Effects\LumGreyScale.cpp" />
+    <ClCompile Include="..\Generators\BounceImage.cpp" />
     <ClCompile Include="..\Generators\ColourTest.cpp" />
     <ClCompile Include="..\Generators\StaticImage.cpp" />
     <ClCompile Include="convertertester.cpp" />
@@ -219,6 +220,7 @@
     <ClInclude Include="..\Effects\Fade.h" />
     <ClInclude Include="..\Effects\GreyScale.h" />
     <ClInclude Include="..\Effects\LumGreyScale.h" />
+    <ClInclude Include="..\Generators\BounceImage.h" />
     <ClInclude Include="..\Generators\ColourTest.h" />
     <ClInclude Include="..\Generators\Generator.h" />
     <ClInclude Include="..\Generators\StaticImage.h" />

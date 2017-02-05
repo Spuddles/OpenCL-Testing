@@ -24,6 +24,7 @@ public:
 	void	applyConverter(RGBA *image);
 	void	toggleAnimation();
 	void	updateAnimation();
+	void	toggleZoom();
 
 private:
 	void	populateGenerators();
@@ -38,6 +39,7 @@ private:
 
 	QTimer	*m_Timer;
 	std::chrono::system_clock::time_point	m_StartTime;
+	bool	m_ZoomedIn{ false };
 };
 
 #endif // CONVERTERTESTER_H
