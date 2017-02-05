@@ -30,10 +30,20 @@ int Nearest::findClosest(unsigned char *image)
 		unsigned char *block = image;
 		int score = 0;
 		char *letter = &m_CharSet[i * 64];
+		int pixelcount = 0;
 		for (int c = 0; c < 64; c++)
 		{
 			int pixel = *(block++) + *(block++) + *(block++);
-			if (pixel > 32) pixel = 1; else pixel = 0;
+			if (pixel > 32)
+			{
+				pixel = 1;
+				pixelcount++;
+			}
+			else
+			{
+				pixel = 0;
+			}
+
 			if (pixel == *(letter++))
 			{
 				score++;
@@ -44,6 +54,13 @@ int Nearest::findClosest(unsigned char *image)
 			}
 			block++;
 		}
+
+		if (pixelcount == 0)
+		{
+			// We are searching for an empty block, lets short circuit
+			return 0;
+		}
+
 		if (score > bestScore)
 		{
 			bestScore = abs(score);
