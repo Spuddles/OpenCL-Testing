@@ -21,6 +21,15 @@ void Graphics::setColour(RGBA rgb)
 	m_DefaultColour = rgb;
 }
 
+void Graphics::clear()
+{
+	RGBA rgba{ 0,0,0,255 };
+	for (int i = 0; i < (m_Width*m_Height); i++)
+	{
+		m_Bitmap[i] = rgba;
+	}
+}
+
 void Graphics::setPixel(unsigned int x, unsigned int y)
 {
 	unsigned int offset = (y*m_Width) + x;

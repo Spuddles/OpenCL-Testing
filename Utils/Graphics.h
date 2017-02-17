@@ -9,6 +9,9 @@ public:
 
 	void	setBitmap(RGBA *bitmap);
 	void	setColour(RGBA rgb);
+
+	void	clear();
+
 	void	setPixel(unsigned int x, unsigned int y);
 	void	setPixel(unsigned int x, unsigned int y, RGBA rgb);
 
