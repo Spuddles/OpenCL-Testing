@@ -149,6 +149,7 @@
     <ClCompile Include="..\Effects\LumGreyScale.cpp" />
     <ClCompile Include="..\Generators\BounceImage.cpp" />
     <ClCompile Include="..\Generators\ColourTest.cpp" />
+    <ClCompile Include="..\Generators\RealtimeGraphics.cpp" />
     <ClCompile Include="..\Generators\StaticImage.cpp" />
     <ClCompile Include="convertertester.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_convertertester.cpp">
@@ -223,6 +224,7 @@
     <ClInclude Include="..\Generators\BounceImage.h" />
     <ClInclude Include="..\Generators\ColourTest.h" />
     <ClInclude Include="..\Generators\Generator.h" />
+    <ClInclude Include="..\Generators\RealtimeGraphics.h" />
     <ClInclude Include="..\Generators\StaticImage.h" />
     <ClInclude Include="GeneratedFiles\ui_convertertester.h" />
   </ItemGroup>
@@ -251,7 +253,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties MocDir=".\GeneratedFiles\$(ConfigurationName)" UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" lupdateOptions="" lupdateOnBuild="0" lreleaseOptions="" Qt5Version_x0020_x64="msvc2015_64" MocOptions="" />
+      <UserProperties MocDir=".\GeneratedFiles\$(ConfigurationName)" UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" lupdateOptions="" lupdateOnBuild="0" lreleaseOptions="" Qt5Version_x0020_x64="Qt 5.6.0" MocOptions="" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

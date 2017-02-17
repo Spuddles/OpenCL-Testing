@@ -23,6 +23,7 @@ private:
 	unsigned int	m_Width;
 	unsigned int	m_Height;
 
-	RGBA			*m_Bitmap;
+	RGBA			*m_Bitmap{ nullptr };
+	RGBA			m_DefaultColour{ 0 };
 };
 

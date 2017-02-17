@@ -13,6 +13,7 @@
 #include "../Generators/ColourTest.h"
 #include "../Generators/StaticImage.h"
 #include "../Generators/BounceImage.h"
+#include "../Generators/RealtimeGraphics.h"
 
 #include "../Utils/Timer.h"
 
@@ -44,6 +45,14 @@ void ConverterTester::populateGenerators()
 	// Colour Sweep
 	Generator *generator = new ColourTest();
 	QString name;
+	if (generator->initialise())
+	{
+		name = generator->getName().c_str();
+		ui.generatorComboBox->addItem(name);
+		m_mapGenerators[name] = generator;
+	}
+
+	generator = new RealtimeGraphics();
 	if (generator->initialise())
 	{
 		name = generator->getName().c_str();
