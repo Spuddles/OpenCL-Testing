@@ -46,28 +46,53 @@ void Graphics::setPixel(unsigned int x, unsigned int y, RGBA rgb)
 	m_Bitmap[offset] = rgb;
 }
 
-void Graphics::drawLine(unsigned int x1, unsigned int y1
-	, unsigned int x2, unsigned int y2)
+void Graphics::drawLine(int x1, int y1
+	, int x2, int y2)
 {
-	int dx = x2 - x1;
-	int dy = y2 - y1;
+	drawLine(x1, y1, x2, y2, m_DefaultColour);
+}
+
+void Graphics::drawLine(int x1, int y1
+	, int x2, int y2, RGBA rgb)
+{
+	float dx = x2 - x1;
+	float dy = y2 - y1;
 
 	// We want to process the longest dimention of the line
 	if (abs(dx) > abs(dy))
 	{
+		if (x1 > x2)
+		{
+			// Flip the co-ords so we can process left to right
+			unsigned int t = x1;
+			x2 = x1; x1 = t;
+			t = y1; y1 = y2; y2 = t;
+		}
+
 		// Move along the x axis to draw
-//		for (unsigned int i=x1;)
+		for (unsigned int x = x1; x < x2; x++)
+		{
+			int y = y1 + (dy*((x - x1) / dx));
+			setPixel(x, y, m_DefaultColour);
+		}
 	}
 	else
 	{
+		if (y1 > y2)
+		{
+			// Flip the co-ords so we can process top to bottom
+			unsigned int t = x1;
+			x2 = x1; x1 = t;
+			t = y1; y1 = y2; y2 = t;
+		}
+
 		// Move along the y axis to draw
+		for (unsigned int y = y1; y < y2; y++)
+		{
+			int x = x1 + (dx*((y - y1) / dy));
+			setPixel(x, y, m_DefaultColour);
+		}
 	}
-}
-
-void Graphics::drawLine(unsigned int x1, unsigned int y1
-	, unsigned int x2, unsigned int y2, RGBA rgb)
-{
-
 }
 
 void Graphics::drawLines(std::vector<std::pair<unsigned int, unsigned int>> points)

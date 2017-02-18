@@ -15,10 +15,10 @@ public:
 	void	setPixel(unsigned int x, unsigned int y);
 	void	setPixel(unsigned int x, unsigned int y, RGBA rgb);
 
-	void	drawLine(unsigned int x1, unsigned int y1
-					,unsigned int x2, unsigned int y2);
-	void	drawLine(unsigned int x1, unsigned int y1
-					,unsigned int x2, unsigned int y2, RGBA rgb);
+	void	drawLine(int x1, int y1
+					,int x2, int y2);
+	void	drawLine(int x1, int y1
+					,int x2, int y2, RGBA rgb);
 
 	void	drawLines(std::vector<std::pair<unsigned int, unsigned int>> points);
 
