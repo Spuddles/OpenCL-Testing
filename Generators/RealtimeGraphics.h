@@ -6,6 +6,15 @@
 
 class RealtimeGraphics : public Generator
 {
+	struct point
+	{
+		int	x;
+		int	y;
+		int dx;
+		int dy;
+		RGBA rgb;
+	};
+
 public:
 	RealtimeGraphics();
 	~RealtimeGraphics();
@@ -15,8 +24,15 @@ public:
 	virtual std::string	getName();
 
 private:
+	void				testDrawLine();
+	void				testSetPixel(float time);
+	void				testDrawPolygon();
+	void				testDrawFatLines();
+	void				testSolidPolygon();
+	void				testRotatingSolidPolygon(float time);
+
 	Graphics			*m_pGraphics{ nullptr };
-	std::vector<int>	m_LeftEdge;
-	std::vector<int>	m_RightEdge;
+	std::vector<point>	m_vecPoints;
+
 };
 

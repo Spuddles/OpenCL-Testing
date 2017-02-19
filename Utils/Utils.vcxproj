@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="Matrix.h" />
     <ClInclude Include="StatsCounter.h" />
     <ClInclude Include="Structs.h" />
     <ClInclude Include="Timer.h" />
@@ -153,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="StatsCounter.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Utils.cpp" />

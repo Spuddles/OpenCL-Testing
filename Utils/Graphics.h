@@ -19,14 +19,28 @@ public:
 					,int x2, int y2);
 	void	drawLine(int x1, int y1
 					,int x2, int y2, RGBA rgb);
+	void	drawFatLine(int x1, int y1
+					  , int x2, int y2, RGBA rgb);
 
-	void	drawLines(std::vector<std::pair<unsigned int, unsigned int>> points);
+	void	drawLines(const std::vector<std::pair<unsigned int, unsigned int>> &points);
+	void	drawLines(const std::vector<std::pair<unsigned int, unsigned int>> &points, RGBA rgb);
+
+	void	drawSolidPolygon(const std::vector<std::pair<unsigned int, unsigned int>> &points, RGBA rgb);
 
 private:
+	void	drawLineIntoEdges(int x1, int y1, int x2, int y2);
+	void	fillBetweenEdges(RGBA rgb);
+	void	fillHorizontal(int x1, int x2, int y, RGBA rgb);
+
+
 	unsigned int	m_Width;
 	unsigned int	m_Height;
 
 	RGBA			*m_Bitmap{ nullptr };
 	RGBA			m_DefaultColour{ 0 };
+
+	std::vector<int>	m_LeftEdge;
+	std::vector<int>	m_RightEdge;
+
 };
 
