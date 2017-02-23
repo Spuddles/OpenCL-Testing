@@ -1,7 +1,8 @@
 #include "Nearest.h"
 #include <algorithm>
 #include <sstream>
-#include "../Utils//Utils.h"
+#include "../Utils/Utils.h"
+#include "../Utils/Structs.h"
 
 Nearest::Nearest()
 {
@@ -18,14 +19,48 @@ bool Nearest::initialise()
 	if (!m_CharSet)
 		return false;
 
+	// Decide which chars we are going to use in the conversion process
+/*	for (unsigned char i = '0'; i <= '9'; i++)
+	{
+		m_vecCharsToTest.push_back(i);
+	}
+	m_vecCharsToTest.push_back(46);*/
+
+	for (int i = 0; i < 256; i++)
+	{
+		m_vecCharsToTest.push_back(i);
+	}
+
 	return true;
 }
 
-int Nearest::findClosest(unsigned char *image)
+int Nearest::findClosestColour(unsigned char *image)
 {
-	int bestScore = 0;
+	int r{ 0 }, g{ 0 }, b{ 0 };
+	for (int i = 0; i < 64; i++)
+	{
+		r += *(image++);
+		g += *(image++);
+		b += *(image++);
+		image++;
+	}
+
+	int grey = (r + b + g) / 192;
+
+	if (grey < 64)
+		return 0;
+	if (grey < 128)
+		return 8;
+	if (grey < 192)
+		return 7;
+	return 15;
+}
+
+int Nearest::findClosestChar(unsigned char *image)
+{
+	int bestScore = -64;
 	int bestOffset = -1;
-	for (int i = 0; i < 256; i++)
+	for (int i : m_vecCharsToTest)
 	{
 		unsigned char *block = image;
 		int score = 0;
@@ -34,7 +69,7 @@ int Nearest::findClosest(unsigned char *image)
 		for (int c = 0; c < 64; c++)
 		{
 			int pixel = *(block++) + *(block++) + *(block++);
-			if (pixel > 32)
+			if (pixel > 128)
 			{
 				pixel = 1;
 				pixelcount++;
@@ -63,7 +98,7 @@ int Nearest::findClosest(unsigned char *image)
 
 		if (score > bestScore)
 		{
-			bestScore = abs(score);
+			bestScore = score;
 			bestOffset = i;
 		}
 	}
@@ -83,10 +118,10 @@ bool Nearest::convert(RGBA *input, CHAR_INFO *output)
 		Utils::extractFromImage((char*)input, 640, 400, (char*)image, 8, 8, x, y);
 
 		// Now look for the closest char to it
-		int closest = findClosest((unsigned char*)image);
+		int closest = findClosestChar((unsigned char*)image);
 
 		output->Char.AsciiChar = closest;
-		output->Attributes = 0x15;
+		output->Attributes = findClosestColour((unsigned char*)image);
 		output++;
 	}
 	return true;
@@ -112,9 +147,7 @@ bool Nearest::convertBack(CHAR_INFO *input, RGBA *output)
 					RGBA *write = output + (y * 640 * 8) + (x * 8) + (v * 640) + u;
 					if (*fontdata > 0)
 					{
-						write->R = 128;
-						write->G = 128;
-						write->B = 128;
+						*write = vecColours[fg];
 						write->A = 255;
 					}
 					else

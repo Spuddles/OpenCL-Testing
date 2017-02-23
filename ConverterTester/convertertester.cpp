@@ -261,6 +261,7 @@ void ConverterTester::updateAnimation()
 	float ms = Timer::getDuration(start);
 	std::stringstream ss;
 	ss << "Frametime = " << ms << "ms";
+	ss << " Time = " << time << " seconds";
 
 	ui.statusBar->showMessage(QString(ss.str().c_str()));
 

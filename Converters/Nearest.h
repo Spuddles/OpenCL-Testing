@@ -15,8 +15,10 @@ public:
 	std::string	getName();
 
 private:
-	int			findClosest(unsigned char *image);
+	int			findClosestColour(unsigned char *image);
+	int			findClosestChar(unsigned char *image);
 
-	char		*m_CharSet;
+	std::vector<unsigned char>	m_vecCharsToTest;
+	char						*m_CharSet;
 };
 
