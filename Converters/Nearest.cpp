@@ -34,8 +34,38 @@ bool Nearest::initialise()
 	return true;
 }
 
+int Nearest::findConsoleColour(unsigned char *image)
+{
+	RGBA *source = (RGBA*) image;
+
+	int offset = -1;
+	float closest = 10e15;
+
+	// Look for the closest colour in 3D space
+	for (int i = 0; i<vecColours.size(); ++i)
+	{
+		RGBA col = vecColours[i];
+		RGBA rgba = *(source++);
+
+		int dr = rgba.R - col.R;
+		int dg = rgba.G - col.G;
+		int db = rgba.B - col.B;
+
+		float dist = (dr*dr) + (dg*dg) + (db*db);
+
+		if (dist < closest)
+		{
+			offset = i;
+			closest = dist;
+		}
+	}
+	return offset;
+}
+
 int Nearest::findClosestColour(unsigned char *image)
 {
+	unsigned char consoleColour[64];
+
 	int r{ 0 }, g{ 0 }, b{ 0 };
 	for (int i = 0; i < 64; i++)
 	{

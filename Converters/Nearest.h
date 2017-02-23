@@ -17,6 +17,7 @@ public:
 private:
 	int			findClosestColour(unsigned char *image);
 	int			findClosestChar(unsigned char *image);
+	int			findConsoleColour(unsigned char *image);
 
 	std::vector<unsigned char>	m_vecCharsToTest;
 	char						*m_CharSet;
