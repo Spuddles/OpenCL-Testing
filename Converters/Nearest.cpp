@@ -26,7 +26,7 @@ bool Nearest::initialise()
 	}
 	m_vecCharsToTest.push_back(46);*/
 
-	for (int i = 0; i < 256; i++)
+	for (int i = 1; i < 256; i++)
 	{
 		m_vecCharsToTest.push_back(i);
 	}
@@ -126,10 +126,13 @@ int Nearest::findClosestChar(unsigned char *image)
 			return 0;
 		}
 
-		if (score > bestScore)
+		if (abs(score) > bestScore)
 		{
-			bestScore = score;
-			bestOffset = i;
+			bestScore = abs(score);
+			if (score < 0)
+				bestOffset = -1*i;
+			else
+				bestOffset = i;
 		}
 	}
 	return bestOffset;
@@ -149,9 +152,19 @@ bool Nearest::convert(RGBA *input, CHAR_INFO *output)
 
 		// Now look for the closest char to it
 		int closest = findClosestChar((unsigned char*)image);
+		int colour = findClosestColour((unsigned char*) image);
 
-		output->Char.AsciiChar = closest;
-		output->Attributes = findClosestColour((unsigned char*)image);
+		if (closest < 0)
+		{
+			output->Char.AsciiChar = closest*-1;
+			output->Attributes = colour << 4;
+		}
+		else
+		{
+			output->Char.AsciiChar = closest;
+			output->Attributes = colour;
+		}
+
 		output++;
 	}
 	return true;
@@ -182,9 +195,7 @@ bool Nearest::convertBack(CHAR_INFO *input, RGBA *output)
 					}
 					else
 					{
-						write->R = 0;
-						write->G = 0;
-						write->B = 0;
+						*write = vecColours[bg];
 						write->A = 255;
 					}
 					fontdata++;
