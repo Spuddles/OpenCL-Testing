@@ -14,9 +14,7 @@ Nearest::~Nearest()
 
 bool Nearest::initialise()
 {
-	// Load in the charset
-	m_CharSet = Utils::loadBinaryFile("..//Images//Charset-ordered.data");
-	if (!m_CharSet)
+	if (!Converter::initialise())
 		return false;
 
 	// Decide which chars we are going to use in the conversion process

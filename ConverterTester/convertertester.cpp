@@ -9,6 +9,8 @@
 #include "../Effects/Fade.h"
 
 #include "../Converters/Nearest.h"
+#include "../Converters/FullBlock.h"
+#include "../Converters/HalfBlock.h"
 
 #include "../Generators/ColourTest.h"
 #include "../Generators/StaticImage.h"
@@ -145,6 +147,22 @@ void ConverterTester::populateConverters()
 	// Closest letter with black background
 	QString name;
 	Converter *converter = new Nearest();
+	if (converter->initialise())
+	{
+		name = converter->getName().c_str();
+		ui.converterComboBox->addItem(name);
+		m_mapConverters[name] = converter;
+	}
+
+	converter = new FullBlock();
+	if (converter->initialise())
+	{
+		name = converter->getName().c_str();
+		ui.converterComboBox->addItem(name);
+		m_mapConverters[name] = converter;
+	}
+
+	converter = new HalfBlock();
 	if (converter->initialise())
 	{
 		name = converter->getName().c_str();

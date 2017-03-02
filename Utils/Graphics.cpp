@@ -26,7 +26,7 @@ void Graphics::setColour(RGBA rgb)
 void Graphics::clear()
 {
 	RGBA rgba{ 0,0,0,255 };
-	for (int i = 0; i < (m_Width*m_Height); i++)
+	for (unsigned int i = 0; i < (m_Width*m_Height); i++)
 	{
 		m_Bitmap[i] = rgba;
 	}
@@ -57,8 +57,8 @@ void Graphics::drawLine(int x1, int y1
 void Graphics::drawLine(int x1, int y1
 	, int x2, int y2, RGBA rgb)
 {
-	float dx = x2 - x1;
-	float dy = y2 - y1;
+	float dx = static_cast<float>(x2 - x1);
+	float dy = static_cast<float>(y2 - y1);
 
 	// We want to process the longest dimention of the line
 	if (abs(dx) > abs(dy))
@@ -73,9 +73,9 @@ void Graphics::drawLine(int x1, int y1
 		}
 
 		// Move along the x axis to draw
-		for (unsigned int x = x1; x < x2; x++)
+		for (int x = x1; x < x2; x++)
 		{
-			int y = y1 + (dy*((x - x1) / dx));
+			int y = static_cast<int>(y1 + (dy*((x - x1) / dx)));
 			setPixel(x, y, rgb);
 		}
 	}
@@ -91,9 +91,9 @@ void Graphics::drawLine(int x1, int y1
 		}
 
 		// Move along the y axis to draw
-		for (unsigned int y = y1; y < y2; y++)
+		for (int y = y1; y < y2; y++)
 		{
-			int x = x1 + (dx*((y - y1) / dy));
+			int x = static_cast<int>(x1 + (dx*((y - y1) / dy)));
 			setPixel(x, y, rgb);
 		}
 	}
@@ -108,13 +108,13 @@ void Graphics::drawLineIntoEdges(int x1, int y1, int x2, int y2)
 		std::swap(y1, y2);
 	}
 
-	float dx = x2 - x1;
-	float dy = y2 - y1;
+	float dx = static_cast<float>(x2 - x1);
+	float dy = static_cast<float>(y2 - y1);
 
 	// Move along the y axis to draw
-	for (unsigned int y = y1; y < y2; y++)
+	for (int y = y1; y < y2; y++)
 	{
-		int x = x1 + (dx*((y - y1) / dy));
+		int x = static_cast<int>(x1 + (dx*((y - y1) / dy)));
 
 		if (m_LeftEdge[y] > x)
 			m_LeftEdge[y] = x;
@@ -152,7 +152,7 @@ void Graphics::drawLines(const std::vector<std::pair<unsigned int, unsigned int>
 
 void Graphics::fillBetweenEdges(RGBA rgb)
 {
-	for (int y = 0; y < m_Height; y++)
+	for (unsigned int y = 0; y < m_Height; y++)
 	{
 		if (m_LeftEdge[y] > -1 && m_RightEdge[y] > -1)
 		{

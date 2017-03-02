@@ -36,7 +36,7 @@ float Timer::getDuration(std::chrono::system_clock::time_point start)
 
 	std::chrono::milliseconds duration = std::chrono::duration_cast<std::chrono::milliseconds>(tp - start);
 
-	return duration.count();
+	return static_cast<float>(duration.count());
 }
 
 void Timer::sleepMS(unsigned int ms)

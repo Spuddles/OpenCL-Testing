@@ -78,7 +78,9 @@ bool Utils::saveBinaryFile(const std::string &filename, char* buffer, int amount
 bool Utils::extractFromImage(char *input, int inputwidth, int inputheight,
 							char *output, int outputwidth, int outputheight, int x, int y )
 {
-// TODO	assert(inputwidth*inputheight >= ((outputheight*inputwidth*(y + 1))*(outputwidth*(x + 1))));
+	assert(inputwidth >= (x + outputwidth));
+	assert(inputheight >= (y + outputheight));
+
 	const int bytesperpixel = 4;
 	char* buffer = input + (x * outputwidth * bytesperpixel) + (y * outputheight * bytesperpixel * inputwidth);
 

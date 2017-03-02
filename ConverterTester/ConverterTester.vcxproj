@@ -141,6 +141,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Converters\Converter.cpp" />
+    <ClCompile Include="..\Converters\FullBlock.cpp" />
+    <ClCompile Include="..\Converters\HalfBlock.cpp" />
     <ClCompile Include="..\Converters\Nearest.cpp" />
     <ClCompile Include="..\Effects\BlackAndWhite.cpp" />
     <ClCompile Include="..\Effects\ConsoleColours.cpp" />
@@ -214,6 +217,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Converters\Converter.h" />
+    <ClInclude Include="..\Converters\FullBlock.h" />
+    <ClInclude Include="..\Converters\HalfBlock.h" />
     <ClInclude Include="..\Converters\Nearest.h" />
     <ClInclude Include="..\Effects\BlackAndWhite.h" />
     <ClInclude Include="..\Effects\ConsoleColours.h" />
@@ -253,7 +258,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties MocDir=".\GeneratedFiles\$(ConfigurationName)" UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" lupdateOptions="" lupdateOnBuild="0" lreleaseOptions="" Qt5Version_x0020_x64="Qt 5.6.0" MocOptions="" />
+      <UserProperties MocDir=".\GeneratedFiles\$(ConfigurationName)" UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" lupdateOptions="" lupdateOnBuild="0" lreleaseOptions="" Qt5Version_x0020_x64="msvc2015_64" MocOptions="" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

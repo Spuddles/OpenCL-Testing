@@ -20,6 +20,5 @@ private:
 	int			findConsoleColour(unsigned char *image);
 
 	std::vector<unsigned char>	m_vecCharsToTest;
-	char						*m_CharSet;
 };
 
