@@ -47,9 +47,9 @@ bool HalfBlock::convert(RGBA *input, CHAR_INFO *output)
 		int y = i / 80;
 
 		// First extract the char we want to process
-		Utils::extractFromImage((char*)input, 640, 400, (char*)image, 8, 4, x, y);
+		Utils::extractFromImage((char*)input, 640, 400, (char*)image, 8, 4, x, y*2);
 		char topColour = getMainColour(image);
-		Utils::extractFromImage((char*) input, 640, 400, (char*) image, 8, 4, x, y+4);
+		Utils::extractFromImage((char*) input, 640, 400, (char*) image, 8, 4, x, (y*2)+1);
 		char bottomColour = getMainColour(image);
 
 		if (topColour == bottomColour)
