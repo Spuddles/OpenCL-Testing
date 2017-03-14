@@ -35,6 +35,8 @@ bool RealtimeGraphics::initialise()
 		m_vecPoints.push_back(p);
 	}
 
+	m_Texture.loadTexture("..//Images//Yoshi-256x256.data", 256, 256);
+
 	return true;
 }
 
@@ -140,15 +142,17 @@ void RealtimeGraphics::testRotatingSolidPolygon(float time)
 {
 	RGBA	rgba{ 255,128,128,255 };
 
-	std::vector<std::pair<unsigned int, unsigned int>>	points{ { 200,100 },{ 300,100 },{ 300,300 },{ 200,300 } };
+//	std::vector<std::pair<unsigned int, unsigned int>>	points{ { 200,100 },{ 300,100 },{ 300,300 },{ 200,300 } };
+	std::vector<std::pair<unsigned int, unsigned int>>	points{ { -50,-100 },{ +50,-100 },{ +50,100 },{ -50,100 } };
+//	std::vector<std::pair<float, float>>	tex{ { 0,0 }, { 1,0 }, { 1,1 }, { 0,1 } };
 
 	// Rotate the points
 	for (auto &p : points)
 	{
-		float x = (int)p.first - 320;
-		float y = (int)p.second - 200;
+		float x = (int)p.first;
+		float y = (int)p.second;
 		Matrix::RotateZ(x, y, time);
-		p.first = (unsigned int)x + 320;
+		p.first = (unsigned int)x + 200;
 		p.second = (unsigned int)y + 200;
 	}
 

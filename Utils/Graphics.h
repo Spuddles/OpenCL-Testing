@@ -39,8 +39,8 @@ private:
 	RGBA			*m_Bitmap{ nullptr };
 	RGBA			m_DefaultColour{ 0 };
 
-	std::vector<int>	m_LeftEdge;
-	std::vector<int>	m_RightEdge;
+	std::vector<std::pair<int, float>>	m_LeftEdge;
+	std::vector<std::pair<int, float>>	m_RightEdge;
 
 };
 

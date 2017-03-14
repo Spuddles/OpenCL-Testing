@@ -1,6 +1,7 @@
 #pragma once
 #include "Generator.h"
 #include "../Utils/Graphics.h"
+#include "../Utils/Texture.h"
 
 #include <vector>
 
@@ -32,6 +33,8 @@ private:
 	void				testRotatingSolidPolygon(float time);
 
 	Graphics			*m_pGraphics{ nullptr };
+	Texture				m_Texture;
+
 	std::vector<point>	m_vecPoints;
 
 };

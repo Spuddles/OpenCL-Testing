@@ -116,10 +116,10 @@ void Graphics::drawLineIntoEdges(int x1, int y1, int x2, int y2)
 	{
 		int x = static_cast<int>(x1 + (dx*((y - y1) / dy)));
 
-		if (m_LeftEdge[y] > x)
-			m_LeftEdge[y] = x;
-		if (m_RightEdge[y] < x)
-			m_RightEdge[y] = x;
+		if (m_LeftEdge[y].first > x)
+			m_LeftEdge[y].first = x;
+		if (m_RightEdge[y].first < x)
+			m_RightEdge[y].first = x;
 	}
 }
 
@@ -154,9 +154,9 @@ void Graphics::fillBetweenEdges(RGBA rgb)
 {
 	for (unsigned int y = 0; y < m_Height; y++)
 	{
-		if (m_LeftEdge[y] > -1 && m_RightEdge[y] > -1)
+		if (m_LeftEdge[y].first > -1 && m_RightEdge[y].first > -1)
 		{
-			fillHorizontal(m_LeftEdge[y], m_RightEdge[y], y, rgb);
+			fillHorizontal(m_LeftEdge[y].first, m_RightEdge[y].first, y, rgb);
 		}
 	}
 }
