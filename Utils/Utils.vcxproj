@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Point.h" />
     <ClInclude Include="StatsCounter.h" />
     <ClInclude Include="Structs.h" />
     <ClInclude Include="Texture.h" />

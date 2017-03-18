@@ -32,89 +32,86 @@ void Graphics::clear()
 	}
 }
 
-void Graphics::setPixel(unsigned int x, unsigned int y)
+void Graphics::setPixel(Point<int> p)
 {
-	unsigned int offset = (y*m_Width) + x;
+	unsigned int offset = (p.y*m_Width) + p.x;
 	assert(offset < m_Width*m_Height);
 
 	m_Bitmap[offset] = m_DefaultColour;
 }
 
-void Graphics::setPixel(unsigned int x, unsigned int y, RGBA rgb)
+void Graphics::setPixel(Point<int> p, RGBA rgb)
 {
-	unsigned int offset = (y*m_Width) + x;
+	unsigned int offset = (p.y*m_Width) + p.x;
 	assert(offset < m_Width*m_Height);
 
 	m_Bitmap[offset] = rgb;
 }
 
-void Graphics::drawLine(int x1, int y1
-	, int x2, int y2)
+void Graphics::drawLine(Point<int> p1, Point<int> p2)
 {
-	drawLine(x1, y1, x2, y2, m_DefaultColour);
+	drawLine(p1, p2, m_DefaultColour);
 }
 
-void Graphics::drawLine(int x1, int y1
-	, int x2, int y2, RGBA rgb)
+void Graphics::drawLine(Point<int> p1, Point<int> p2, RGBA rgb)
 {
-	float dx = static_cast<float>(x2 - x1);
-	float dy = static_cast<float>(y2 - y1);
+	float dx = static_cast<float>(p2.x - p1.x);
+	float dy = static_cast<float>(p2.y - p1.y);
 
 	// We want to process the longest dimention of the line
 	if (abs(dx) > abs(dy))
 	{
-		if (x1 > x2)
+		if (p1.x > p2.x)
 		{
 			// Flip the co-ords so we can process left to right
-			std::swap(x1, x2);
-			std::swap(y1, y2);
+			std::swap(p1.x, p2.x);
+			std::swap(p1.y, p2.y);
 			dx = dx*-1.0f;
 			dy = dy*-1.0f;
 		}
 
 		// Move along the x axis to draw
-		for (int x = x1; x < x2; x++)
+		for (int x = p1.x; x < p2.x; x++)
 		{
-			int y = static_cast<int>(y1 + (dy*((x - x1) / dx)));
-			setPixel(x, y, rgb);
+			int y = static_cast<int>(p1.y + (dy*((x - p1.x) / dx)));
+			setPixel(Point<int>(x, y), rgb);
 		}
 	}
 	else
 	{
-		if (y1 > y2)
+		if (p1.y > p2.y)
 		{
 			// Flip the co-ords so we can process top to bottom
-			std::swap(x1, x2);
-			std::swap(y1, y2);
+			std::swap(p1.x, p2.x);
+			std::swap(p1.y, p2.y);
 			dx = dx*-1.0f;
 			dy = dy*-1.0f;
 		}
 
 		// Move along the y axis to draw
-		for (int y = y1; y < y2; y++)
+		for (int y = p1.y; y < p2.y; y++)
 		{
-			int x = static_cast<int>(x1 + (dx*((y - y1) / dy)));
-			setPixel(x, y, rgb);
+			int x = static_cast<int>(p1.x + (dx*((y - p1.y) / dy)));
+			setPixel(Point<int>(x, y), rgb);
 		}
 	}
 }
 
-void Graphics::drawLineIntoEdges(int x1, int y1, int x2, int y2)
+void Graphics::drawLineIntoEdges(Point<int> p1, Point<int> p2)
 {
-	if (y1 > y2)
+	if (p1.y > p2.y)
 	{
 		// Flip the co-ords so we can process top to bottom
-		std::swap(x1, x2);
-		std::swap(y1, y2);
+		std::swap(p1, p2);
 	}
 
-	float dx = static_cast<float>(x2 - x1);
-	float dy = static_cast<float>(y2 - y1);
+	float dx = static_cast<float>(p2.x - p1.x);
+	float dy = static_cast<float>(p2.y - p1.y);
 
 	// Move along the y axis to draw
-	for (int y = y1; y < y2; y++)
+	for (int y = p1.y; y < p2.y; y++)
 	{
-		int x = static_cast<int>(x1 + (dx*((y - y1) / dy)));
+		int x = static_cast<int>(p1.x + (dx*((y - p1.y) / dy)));
 
 		if (m_LeftEdge[y].first > x)
 			m_LeftEdge[y].first = x;
@@ -123,30 +120,36 @@ void Graphics::drawLineIntoEdges(int x1, int y1, int x2, int y2)
 	}
 }
 
-void Graphics::drawFatLine(int x1, int y1
-	, int x2, int y2, RGBA rgb)
+void Graphics::drawFatLine(Point<int> p1, Point<int> p2, RGBA rgb)
 {
-	drawLine(x1, y1, x2, y2, rgb);
+	drawLine(p1, p2, rgb);
 
-	drawLine(x1+1, y1, x2+1, y2, rgb);
-	drawLine(x1, y1+1, x2, y2+1, rgb);
-	drawLine(x1-1, y1, x2-1, y2, rgb);
-	drawLine(x1, y1-1, x2, y2-1, rgb);
+	p1.x++; p2.x++;
+	drawLine(p1, p2, rgb);
+
+	p1.x--; p2.x--; p1.y++; p2.y++;
+	drawLine(p1, p2, rgb);
+
+	p1.y--; p2.y--; p1.x--; p2.x--;
+	drawLine(p1, p2, rgb);
+
+	p1.x++; p2.x++; p1.y--; p2.y--;
+	drawLine(p1, p2, rgb);
 }
 
-	void Graphics::drawLines(const std::vector<std::pair<unsigned int, unsigned int>> &points)
+void Graphics::drawLines(const std::vector<Point<int>> &points)
 {
 	drawLines(points, m_DefaultColour);
 }
 
-void Graphics::drawLines(const std::vector<std::pair<unsigned int, unsigned int>> &points, RGBA rgb)
+void Graphics::drawLines(const std::vector<Point<int>> &points, RGBA rgb)
 {
 	for (size_t i = 0; i < points.size(); i++)
 	{
-		auto &a = points[i];
-		auto &b = points[(i + 1) % points.size()];
+		Point<int> p1 = points[i];
+		Point<int> p2 = points[(i + 1) % points.size()];
 
-		drawFatLine(a.first, a.second, b.first, b.second, rgb);
+		drawFatLine(p1, p2, rgb);
 	}
 }
 
@@ -170,22 +173,22 @@ void Graphics::fillHorizontal(int x1, int x2, int y, RGBA rgb)
 	}
 }
 
-void Graphics::drawSolidPolygon(const std::vector<std::pair<unsigned int, unsigned int>> &points, RGBA rgb)
+void Graphics::drawSolidPolygon(const std::vector<Point<int>> &points, RGBA rgb)
 {
 	// Clear the edge buffers
 	for (int i = 0; i < m_LeftEdge.size(); i++)
 	{
-		m_LeftEdge[i] = m_Width+1;
-		m_RightEdge[i] = -1;
+		m_LeftEdge[i].first = m_Width+1;
+		m_RightEdge[i].first = -1;
 	}
 
 	// Render each line into the buffer
 	for (int i = 0; i < points.size(); i++)
 	{
-		auto &a = points[i];
-		auto &b = points[(i+1)%points.size()];
+		auto &p1 = points[i];
+		auto &p2 = points[(i+1)%points.size()];
 
-		drawLineIntoEdges(a.first, a.second, b.first, b.second);
+		drawLineIntoEdges(p1, p2);
 	}
 
 	// Fill in the gaps

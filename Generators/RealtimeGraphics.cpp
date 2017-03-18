@@ -1,6 +1,7 @@
 #include "RealtimeGraphics.h"
 #include "../Utils/Utils.h"
 #include "../Utils/Matrix.h"
+#include "../Utils/Point.h"
 
 #include <cassert>
 
@@ -45,23 +46,24 @@ void RealtimeGraphics::testDrawLine()
 	RGBA	rgba{ 255,128,128,255 };
 
 	// Drawline testing
-	m_pGraphics->drawLine(100, 100, 0, 100, rgba);
-	m_pGraphics->drawLine(100, 100, 0, 50, rgba);
-	m_pGraphics->drawLine(100, 100, 0, 0, rgba);
-	m_pGraphics->drawLine(100, 100, 50, 0, rgba);
-	m_pGraphics->drawLine(100, 100, 100, 0, rgba);
-	m_pGraphics->drawLine(100, 100, 150, 0, rgba);
-	m_pGraphics->drawLine(100, 100, 200, 0, rgba);
-	m_pGraphics->drawLine(100, 100, 200, 50, rgba);
-	m_pGraphics->drawLine(100, 100, 200, 100, rgba);
+	Point<int>	p(100, 100);
+	m_pGraphics->drawLine(p, Point<int>(0, 100), rgba);
+	m_pGraphics->drawLine(p, Point<int>(0, 50), rgba);
+	m_pGraphics->drawLine(p, Point<int>(0, 0), rgba);
+	m_pGraphics->drawLine(p, Point<int>(50, 0), rgba);
+	m_pGraphics->drawLine(p, Point<int>(100, 0), rgba);
+	m_pGraphics->drawLine(p, Point<int>(150, 0), rgba);
+	m_pGraphics->drawLine(p, Point<int>(200, 0), rgba);
+	m_pGraphics->drawLine(p, Point<int>(200, 50), rgba);
+	m_pGraphics->drawLine(p, Point<int>(200, 100), rgba);
 
-	m_pGraphics->drawLine(100, 100, 200, 150, rgba);
-	m_pGraphics->drawLine(100, 100, 200, 200, rgba);
-	m_pGraphics->drawLine(100, 100, 150, 200, rgba);
-	m_pGraphics->drawLine(100, 100, 100, 200, rgba);
-	m_pGraphics->drawLine(100, 100, 50, 200, rgba);
-	m_pGraphics->drawLine(100, 100, 0, 200, rgba);
-	m_pGraphics->drawLine(100, 100, 0, 150, rgba);
+	m_pGraphics->drawLine(p, Point<int>(200, 150), rgba);
+	m_pGraphics->drawLine(p, Point<int>(200, 200), rgba);
+	m_pGraphics->drawLine(p, Point<int>(150, 200), rgba);
+	m_pGraphics->drawLine(p, Point<int>(100, 200), rgba);
+	m_pGraphics->drawLine(p, Point<int>(50, 200), rgba);
+	m_pGraphics->drawLine(p, Point<int>(0, 200), rgba);
+	m_pGraphics->drawLine(p, Point<int>(0, 150), rgba);
 }
 
 void RealtimeGraphics::testSetPixel(float time)
@@ -69,12 +71,13 @@ void RealtimeGraphics::testSetPixel(float time)
 	RGBA	rgba{ 255,128,128,255 };
 
 	// setPixel testing
+	Point<int>	p;
 	for (int i=0; i < 16; i++)
 	{
-	int x = (int)(100 + i + (time * 10)) % 640;
-	int y = (int)(100 + i + (time * 10)) % 400;
+	p.x = (int)(100 + i + (time * 10)) % 640;
+	p.y = (int)(100 + i + (time * 10)) % 400;
 
-	m_pGraphics->setPixel(x, y, rgba);
+	m_pGraphics->setPixel(p, rgba);
 	}
 }
 
@@ -83,7 +86,7 @@ void RealtimeGraphics::testDrawPolygon()
 	RGBA	rgba{ 255,128,128,255 };
 
 	// Draw polygon testing
-	std::vector<std::pair<unsigned int, unsigned int>>	points{ {100,100}, {200,100}, {200,200}, {100,200} };
+	std::vector<Point<int>>	points{ Point<int>(100,100), Point<int>(200,100), Point<int>(200,200), Point<int>(100,200) };
 	m_pGraphics->drawLines(points, rgba);
 }
 
@@ -125,7 +128,7 @@ void RealtimeGraphics::testDrawFatLines()
 		point &a = m_vecPoints[i];
 		point &b = m_vecPoints[i + 1];
 
-		m_pGraphics->drawFatLine(a.x, a.y, b.x, b.y, a.rgb);
+		m_pGraphics->drawFatLine(Point<int>(a.x, a.y), Point<int>(b.x, b.y), a.rgb);
 	}
 }
 
@@ -134,7 +137,7 @@ void RealtimeGraphics::testSolidPolygon()
 	RGBA	rgba{ 255,128,128,255 };
 
 	// Draw solid polygon testing
-	std::vector<std::pair<unsigned int, unsigned int>>	points{ { 100,100 },{ 300,100 },{ 300,300 },{ 100,300 } };
+	std::vector<Point<int>>	points{ Point<int>(100,100),Point<int>(300,100), Point<int>(300,300), Point<int>(100,300) };
 	m_pGraphics->drawSolidPolygon(points, rgba);
 }
 
@@ -143,17 +146,17 @@ void RealtimeGraphics::testRotatingSolidPolygon(float time)
 	RGBA	rgba{ 255,128,128,255 };
 
 //	std::vector<std::pair<unsigned int, unsigned int>>	points{ { 200,100 },{ 300,100 },{ 300,300 },{ 200,300 } };
-	std::vector<std::pair<unsigned int, unsigned int>>	points{ { -50,-100 },{ +50,-100 },{ +50,100 },{ -50,100 } };
+	std::vector<Point<int>>	points{ Point<int>(-50,-100),Point<int>(+50,-100),Point<int>(+50,100),Point<int>(-50,100) };
 //	std::vector<std::pair<float, float>>	tex{ { 0,0 }, { 1,0 }, { 1,1 }, { 0,1 } };
 
 	// Rotate the points
 	for (auto &p : points)
 	{
-		float x = (int)p.first;
-		float y = (int)p.second;
+		float x = p.x;
+		float y = p.y;
 		Matrix::RotateZ(x, y, time);
-		p.first = (unsigned int)x + 200;
-		p.second = (unsigned int)y + 200;
+		p.x = (int)x + 200;
+		p.y = (int)y + 200;
 	}
 
 	// Draw solid polygon testing
