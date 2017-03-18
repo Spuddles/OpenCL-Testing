@@ -1,7 +1,7 @@
 #pragma once
 #include "Generator.h"
-#include "../Utils/Graphics.h"
-#include "../Utils/Texture.h"
+#include "Graphics.h"
+#include "Texture.h"
 
 #include <vector>
 

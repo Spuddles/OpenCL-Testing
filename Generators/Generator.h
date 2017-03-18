@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "../Utils/Structs.h"
+#include "Structs.h"
 
 class Generator
 {

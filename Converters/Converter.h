@@ -1,7 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include <string>
-#include "../Utils/Structs.h"
+#include "Structs.h"
 
 class Converter
 {

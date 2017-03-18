@@ -1,7 +1,7 @@
 #include "RealtimeGraphics.h"
-#include "../Utils/Utils.h"
-#include "../Utils/Matrix.h"
-#include "../Utils/Point.h"
+#include "Utils.h"
+#include "Matrix.h"
+#include "Point.h"
 
 #include <cassert>
 
@@ -145,16 +145,21 @@ void RealtimeGraphics::testRotatingSolidPolygon(float time)
 {
 	RGBA	rgba{ 255,128,128,255 };
 
-//	std::vector<std::pair<unsigned int, unsigned int>>	points{ { 200,100 },{ 300,100 },{ 300,300 },{ 200,300 } };
 	std::vector<Point<int>>	points{ Point<int>(-50,-100),Point<int>(+50,-100),Point<int>(+50,100),Point<int>(-50,100) };
 //	std::vector<std::pair<float, float>>	tex{ { 0,0 }, { 1,0 }, { 1,1 }, { 0,1 } };
+
+	// Build up the rotation and transform matrix
+	Matrix4f m;
+	m.setIndentity();
+	m.rotateZ(time);
+	m.transform(200, 200, 0);
 
 	// Rotate the points
 	for (auto &p : points)
 	{
 		float x = p.x;
 		float y = p.y;
-		Matrix::RotateZ(x, y, time);
+		//Matrix::RotateZ(x, y, time);
 		p.x = (int)x + 200;
 		p.y = (int)y + 200;
 	}

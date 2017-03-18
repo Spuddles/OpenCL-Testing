@@ -1,5 +1,5 @@
 #include "StaticImage.h"
-#include "..\Utils\Utils.h"
+#include "Utils.h"
 
 StaticImage::StaticImage(const std::string &fileName):
 	m_FileName(fileName)

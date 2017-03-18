@@ -1,8 +1,8 @@
 #include "HalfBlock.h"
 #include <algorithm>
 #include <sstream>
-#include "../Utils/Utils.h"
-#include "../Utils/Structs.h"
+#include "Utils.h"
+#include "Structs.h"
 
 HalfBlock::HalfBlock()
 {

@@ -1,5 +1,5 @@
 #include "BounceImage.h"
-#include "../Utils/Utils.h"
+#include "Utils.h"
 
 BounceImage::BounceImage()
 {
