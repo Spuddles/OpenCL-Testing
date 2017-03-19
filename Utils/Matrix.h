@@ -5,10 +5,12 @@ class Matrix4f
 {
 public:
 			Matrix4f();
+			Matrix4f(float value);
+			Matrix4f(float values[16]);
 			~Matrix4f();
 
 	// Access
-	float	get(int x, int y) const;
+	float	get(unsigned int x, unsigned int y) const;
 
 	// Rotations
 	void	rotateX(float d);
@@ -22,28 +24,20 @@ public:
 	void	transformZ(float Z);
 	
 	// Set the identity matrix
-	void	setIndentity();
+	void	setIdentity();
 
 	// Operator overloads
-/*	Matrix& operator+(const Matrix& m);
-	Matrix& operator+(const Matrix& m);
-	Matrix& operator+(const Matrix& m);
-	Matrix& operator+(const Matrix& m);
+	bool operator==(const Matrix4f &m);
+
+/*	Matrix& operator+(const Matrix &m);
+	Matrix& operator+(const Matrix &m);
+	Matrix& operator+(const Matrix &m);
+	Matrix& operator+(const Matrix &m);
 	*/
 
 private:
-	float	m_Data[16];
+	float	m_Data[16] = { 0.0f };
 };
 
-class Vertex4f
-{
-public:
-			Vertex4f();
-			~Vertex4f();
 
-	Vertex4f operator*(const Matrix4f &m);
-
-private:
-	float	m_Data[4];
-};
 
