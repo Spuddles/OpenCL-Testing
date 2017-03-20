@@ -35,12 +35,73 @@ bool Matrix4f::operator==(const Matrix4f &m)
 	return true;
 }
 
+bool Matrix4f::operator!=(const Matrix4f &m)
+{
+	for (int i = 0; i < 16; i++)
+	{
+		if (m_Data[i] != m.get(i % 4, i / 4))
+			return true;
+	}
+	return false;
+}
+
+Matrix4f Matrix4f::operator+(const Matrix4f &m)
+{
+	Matrix4f result(234.0f);
+
+	for (int i = 0; i < 16; i++)
+	{
+		float value = m_Data[i] + m.get(i % 4, i / 4);
+		result.set(i % 4, i / 4, value);
+	}
+	return result;
+}
+
+Matrix4f Matrix4f::operator-(const Matrix4f &m)
+{
+	Matrix4f result(234.0f);
+
+	for (int i = 0; i < 16; i++)
+	{
+		float value = m_Data[i] - m.get(i % 4, i / 4);
+		result.set(i % 4, i / 4, value);
+	}
+	return result;
+}
+
+Matrix4f Matrix4f::operator*(const Matrix4f &m)
+{
+	Matrix4f result;
+
+	for (int i = 0; i < 16; i++)
+	{
+		unsigned int x = i % 4;
+		unsigned int y = 1 / 4;
+
+		float value = m_Data[(y * 4) + 0] * m.get(x, 0) +
+			m_Data[(y * 4) + 1] * m.get(x, 1) +
+			m_Data[(y * 4) + 2] * m.get(x, 2) +
+			m_Data[(y * 4) + 3] * m.get(x, 3);
+
+		result.set(i % 4, i / 4, value);
+	}
+	return result;
+}
+
 float Matrix4f::get(unsigned int x, unsigned int y) const
 {
 	assert(x <= 3);
 	assert(y <= 3);
 
 	return m_Data[x + (y * 4)];
+}
+
+void Matrix4f::set(unsigned int x, unsigned int y, float value)
+{
+	assert(x <= 3);
+	assert(y <= 3);
+
+	m_Data[x + (y * 4)] = value;
 }
 
 void Matrix4f::rotateX(float d)

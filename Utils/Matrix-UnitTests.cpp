@@ -37,6 +37,23 @@ TEST(Matrix, TestInitialiseAllValues)
 	}
 }
 	
+TEST(Matrix, TestSetValue)
+{
+	Matrix4f m(1.0f);
+	m.set(0, 0, 123.0f);
+	EXPECT_EQ(123.0f, m.get(0, 0));
+}
+
+TEST(Matrix, TestGetValue)
+{
+	Matrix4f	m(123.0f);
+
+	for (int i = 0; i < 16; i++)
+	{
+		EXPECT_EQ(123.0f, m.get(i % 4, i / 4));
+	}
+}
+
 TEST(Matrix, TestIdentity)
 {
 	Matrix4f m;
@@ -102,8 +119,57 @@ TEST(Matrix, TestRotateX1)
 
 	// Test roation by 90 degrees
 	m.rotateX(90.0);
-
-
-
 }
 
+TEST(Matrix, TestEquality)
+{
+	Matrix4f	m1(1.0f);
+	Matrix4f	m2(2.0f);
+	Matrix4f	m3(1.0f);
+
+	EXPECT_EQ(true, m1 == m3);
+	EXPECT_EQ(false, m1 == m2);
+}
+
+TEST(Matrix, TestInequality)
+{
+	Matrix4f	m1(1.0f);
+	Matrix4f	m2(2.0f);
+	Matrix4f	m3(1.0f);
+
+	EXPECT_EQ(true, m1 != m2);
+	EXPECT_EQ(false, m1 != m3);
+}
+
+TEST(Matrix, TestAddition)
+{
+	Matrix4f	m1(1.0f);
+	Matrix4f	m2(2.0f);
+	Matrix4f	answer(3.0f);
+
+	Matrix4f	m3 = m1 + m2;
+
+	EXPECT_EQ(true, m3 == answer);
+}
+
+TEST(Matrix, TestSubtraction)
+{
+	Matrix4f	m1(3.0f);
+	Matrix4f	m2(2.0f);
+	Matrix4f	answer(1.0f);
+
+	Matrix4f	m3 = m1 - m2;
+
+	EXPECT_EQ(true, m3 == answer);
+}
+
+TEST(Matrix, TestMultiplication)
+{
+	Matrix4f	m1(3.0f);
+	Matrix4f	m2(2.0f);
+	Matrix4f	answer(24.0f);
+
+	Matrix4f	m3 = m1 * m2;
+
+	EXPECT_EQ(true, m3 == answer);
+}

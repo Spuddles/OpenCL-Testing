@@ -11,6 +11,7 @@ public:
 
 	// Access
 	float	get(unsigned int x, unsigned int y) const;
+	void	set(unsigned int x, unsigned int y, float value);
 
 	// Rotations
 	void	rotateX(float d);
@@ -28,12 +29,11 @@ public:
 
 	// Operator overloads
 	bool operator==(const Matrix4f &m);
+	bool operator!=(const Matrix4f &m);
 
-/*	Matrix& operator+(const Matrix &m);
-	Matrix& operator+(const Matrix &m);
-	Matrix& operator+(const Matrix &m);
-	Matrix& operator+(const Matrix &m);
-	*/
+	Matrix4f operator+(const Matrix4f &m);
+	Matrix4f operator-(const Matrix4f &m);
+	Matrix4f operator*(const Matrix4f &m);
 
 private:
 	float	m_Data[16] = { 0.0f };
