@@ -130,27 +130,27 @@ TEST(Matrix, TestRotateX1)
 
 	// Test rotation by 90 degrees
 	m.setIdentity();
-	m.rotateX(M_PI/2);
-	EXPECT_EQ(true, Compare(0.0f, m.get(1, 1), 0.00001));
-	EXPECT_EQ(true, Compare(1.0f, m.get(1, 2), 0.00001));
-	EXPECT_EQ(true, Compare(-1.0f, m.get(2, 1), 0.00001));
-	EXPECT_EQ(true, Compare(0.0f, m.get(2, 2), 0.00001));
+	m.rotateX((float)M_PI/2.0f);
+	EXPECT_EQ(true, Compare(0.0f, m.get(1, 1), 0.00001f));
+	EXPECT_EQ(true, Compare(1.0f, m.get(1, 2), 0.00001f));
+	EXPECT_EQ(true, Compare(-1.0f, m.get(2, 1), 0.00001f));
+	EXPECT_EQ(true, Compare(0.0f, m.get(2, 2), 0.00001f));
 
 	// Test rotation by 180 degrees
 	m.setIdentity();
-	m.rotateX(M_PI);
-	EXPECT_EQ(true, Compare(-1.0f, m.get(1, 1), 0.00001));
-	EXPECT_EQ(true, Compare(0.0f, m.get(1, 2), 0.00001));
-	EXPECT_EQ(true, Compare(0.0f, m.get(2, 1), 0.00001));
-	EXPECT_EQ(true, Compare(-1.0f, m.get(2, 2), 0.00001));
+	m.rotateX((float)M_PI);
+	EXPECT_EQ(true, Compare(-1.0f, m.get(1, 1), 0.00001f));
+	EXPECT_EQ(true, Compare(0.0f, m.get(1, 2), 0.00001f));
+	EXPECT_EQ(true, Compare(0.0f, m.get(2, 1), 0.00001f));
+	EXPECT_EQ(true, Compare(-1.0f, m.get(2, 2), 0.00001f));
 
 	// Test rotation by 270 degrees
 	m.setIdentity();
-	m.rotateX(M_PI*1.5);
-	EXPECT_EQ(true, Compare(0.0f, m.get(1, 1), 0.00001));
-	EXPECT_EQ(true, Compare(-1.0f, m.get(1, 2), 0.00001));
-	EXPECT_EQ(true, Compare(1.0f, m.get(2, 1), 0.00001));
-	EXPECT_EQ(true, Compare(0.0f, m.get(2, 2), 0.00001));
+	m.rotateX((float)M_PI*1.5f);
+	EXPECT_EQ(true, Compare(0.0f, m.get(1, 1), 0.00001f));
+	EXPECT_EQ(true, Compare(-1.0f, m.get(1, 2), 0.00001f));
+	EXPECT_EQ(true, Compare(1.0f, m.get(2, 1), 0.00001f));
+	EXPECT_EQ(true, Compare(0.0f, m.get(2, 2), 0.00001f));
 }
 
 TEST(Matrix, TestEquality)
