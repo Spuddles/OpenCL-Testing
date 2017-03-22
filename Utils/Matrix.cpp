@@ -1,5 +1,7 @@
 #include "Matrix.h"
 #include <cassert>
+#include <iostream>
+#include <iomanip>
 
 Matrix4f::Matrix4f()
 {
@@ -165,3 +167,22 @@ void Matrix4f::setIdentity()
 	m_Data[15] = 1.0f;
 }
 
+void Matrix4f::print() const
+{
+	std::cout << std::fixed;
+	std::cout << std::setprecision(4);
+
+	for (int i = 0; i < 16; i++)
+	{
+		std::cout << m_Data[i];
+		if (i % 4 == 3)
+		{
+			std::cout << std::endl;
+		}
+		else
+		{
+			std::cout << ",";
+		}
+	}
+	std::cout << std::endl;
+}

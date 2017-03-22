@@ -35,6 +35,9 @@ public:
 	Matrix4f operator-(const Matrix4f &m);
 	Matrix4f operator*(const Matrix4f &m);
 
+	// Helper function for debugging
+	void	print() const;
+
 private:
 	float	m_Data[16] = { 0.0f };
 };
