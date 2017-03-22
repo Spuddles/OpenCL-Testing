@@ -1,5 +1,16 @@
 #include "Matrix.h"
 #include "gtest\gtest.h"
+#define _USE_MATH_DEFINES
+#include <math.h>
+
+bool Compare(float a, float b, float epsilon)
+{
+	if (fabs(a - b) < epsilon)
+	{
+		return true;
+	}
+	return false;
+}
 
 TEST(Matrix, TestInitialiseEmpty)
 {
@@ -115,10 +126,31 @@ TEST(Matrix, TestTransformZ)
 
 TEST(Matrix, TestRotateX1)
 {
-	Matrix4f m(1.0f);
+	Matrix4f m;
 
-	// Test roation by 90 degrees
-	m.rotateX(90.0);
+	// Test rotation by 90 degrees
+	m.setIdentity();
+	m.rotateX(M_PI/2);
+	EXPECT_EQ(true, Compare(0.0f, m.get(1, 1), 0.00001));
+	EXPECT_EQ(true, Compare(1.0f, m.get(1, 2), 0.00001));
+	EXPECT_EQ(true, Compare(-1.0f, m.get(2, 1), 0.00001));
+	EXPECT_EQ(true, Compare(0.0f, m.get(2, 2), 0.00001));
+
+	// Test rotation by 180 degrees
+	m.setIdentity();
+	m.rotateX(M_PI);
+	EXPECT_EQ(true, Compare(-1.0f, m.get(1, 1), 0.00001));
+	EXPECT_EQ(true, Compare(0.0f, m.get(1, 2), 0.00001));
+	EXPECT_EQ(true, Compare(0.0f, m.get(2, 1), 0.00001));
+	EXPECT_EQ(true, Compare(-1.0f, m.get(2, 2), 0.00001));
+
+	// Test rotation by 270 degrees
+	m.setIdentity();
+	m.rotateX(M_PI*1.5);
+	EXPECT_EQ(true, Compare(0.0f, m.get(1, 1), 0.00001));
+	EXPECT_EQ(true, Compare(-1.0f, m.get(1, 2), 0.00001));
+	EXPECT_EQ(true, Compare(1.0f, m.get(2, 1), 0.00001));
+	EXPECT_EQ(true, Compare(0.0f, m.get(2, 2), 0.00001));
 }
 
 TEST(Matrix, TestEquality)
