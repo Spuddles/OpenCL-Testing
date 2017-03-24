@@ -31,7 +31,10 @@ Vertex4f Vertex4f::operator*(const Matrix4f &m)
 
 	for (int i = 0; i < 4; i++)
 	{
-		v.m_Data[i] = m_Data[0] * m.get(0, 0); // TODO
+		v.m_Data[i] = (m_Data[0] * m.get(i, 0))
+			+ (m_Data[1] * m.get(i, 1))
+			+ (m_Data[2] * m.get(i, 2))
+			+ (m_Data[3] * m.get(i, 3));
 	}
 	return v;
 }
