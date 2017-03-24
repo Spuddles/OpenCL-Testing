@@ -1,6 +1,7 @@
 #include "RealtimeGraphics.h"
 #include "Utils.h"
 #include "Matrix.h"
+#include "Vector.h"
 #include "Point.h"
 
 #include <cassert>
@@ -150,18 +151,23 @@ void RealtimeGraphics::testRotatingSolidPolygon(float time)
 
 	// Build up the rotation and transform matrix
 	Matrix4f m;
-	m.setIndentity();
-	m.rotateZ(time);
-	m.transform(200, 200, 0);
+	m.setIdentity();
+//	m.rotateZ(time);
+	m.rotateX(time / 5.0f);
+//	m.rotateY(time / 9.0f);
+	m.transform(300, 200, 0);
 
 	// Rotate the points
 	for (auto &p : points)
 	{
 		float x = p.x;
 		float y = p.y;
-		//Matrix::RotateZ(x, y, time);
-		p.x = (int)x + 200;
-		p.y = (int)y + 200;
+
+		Vertex4f v(x,y,0.0f,1.0f);
+		Vertex4f v2 = v * m;
+
+		p.x = (int)v2.x();
+		p.y = (int)v2.y();
 	}
 
 	// Draw solid polygon testing
