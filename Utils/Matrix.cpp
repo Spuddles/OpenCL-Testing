@@ -23,6 +23,12 @@ Matrix4f::Matrix4f(float values[16])
 	}
 }
 
+Matrix4f::Matrix4f(const Matrix4f &m)
+{
+	const float* ptr = m.getDataPtr();
+	std::memcpy(m_Data, ptr, sizeof(float) * 16);
+}
+
 Matrix4f::~Matrix4f()
 {
 }
@@ -78,7 +84,7 @@ Matrix4f Matrix4f::operator*(const Matrix4f &m)
 	for (int i = 0; i < 16; i++)
 	{
 		unsigned int x = i % 4;
-		unsigned int y = 1 / 4;
+		unsigned int y = i / 4;
 
 		float value = m_Data[(y * 4) + 0] * m.get(x, 0) +
 			m_Data[(y * 4) + 1] * m.get(x, 1) +
@@ -106,31 +112,54 @@ void Matrix4f::set(unsigned int x, unsigned int y, float value)
 	m_Data[x + (y * 4)] = value;
 }
 
+const float* Matrix4f::getDataPtr() const
+{
+	return m_Data;
+}
+
 void Matrix4f::rotateX(float d)
 {
-	m_Data[5] = std::cos(d);
-	m_Data[6] = -std::sin(d);
+	Matrix4f	m;
+	m.setIdentity();
 
-	m_Data[9] = std::sin(d);
-	m_Data[10] = std::cos(d);
+	m.set(1, 1, std::cos(d));
+	m.set(2, 1, -std::sin(d));
+			   
+	m.set(1, 2, std::sin(d));
+	m.set(2, 2, std::cos(d));
+
+	Matrix4f m2 = *this * m;
+	std::memcpy(m_Data, m2.getDataPtr(), sizeof(m_Data));
 }
 
 void Matrix4f::rotateY(float d)
 {
-	m_Data[0] = std::cos(d);
-	m_Data[2] = std::sin(d);
+	Matrix4f	m;
+	m.setIdentity();
 
-	m_Data[8] = -std::sin(d);
-	m_Data[10] = std::cos(d);
+	m.set(0, 0, std::cos(d));
+	m.set(2, 0, std::sin(d));
+
+	m.set(0, 2, -std::sin(d));
+	m.set(2, 2, std::cos(d));
+
+	Matrix4f m2 = *this * m;
+	std::memcpy(m_Data, m2.getDataPtr(), sizeof(m_Data));
 }
 
 void Matrix4f::rotateZ(float d)
 {
-	m_Data[0] = std::cos(d);
-	m_Data[4] = -std::sin(d);
+	Matrix4f	m;
+	m.setIdentity();
 
-	m_Data[1] = std::sin(d);
-	m_Data[5] = std::cos(d);
+	m.set(0, 0, std::cos(d));
+	m.set(0, 1, -std::sin(d));
+
+	m.set(1, 0, std::sin(d));
+	m.set(1, 1, std::cos(d));
+
+	Matrix4f m2 = *this * m;
+	std::memcpy(m_Data, m2.getDataPtr(), sizeof(m_Data));
 }
 
 void Matrix4f::transform(float X, float Y, float Z)

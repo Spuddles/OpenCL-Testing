@@ -7,11 +7,13 @@ public:
 			Matrix4f();
 			Matrix4f(float value);
 			Matrix4f(float values[16]);
+			Matrix4f(const Matrix4f &m);
 			~Matrix4f();
 
 	// Access
 	float	get(unsigned int x, unsigned int y) const;
 	void	set(unsigned int x, unsigned int y, float value);
+	const float*	getDataPtr() const;
 
 	// Rotations
 	void	rotateX(float d);

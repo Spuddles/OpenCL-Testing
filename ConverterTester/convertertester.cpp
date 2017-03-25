@@ -45,8 +45,10 @@ void ConverterTester::populateGenerators()
 	// to the combo box and collection
 
 	// Colour Sweep
-	Generator *generator = new ColourTest();
+	Generator *generator;
 	QString name;
+
+	generator = new RealtimeGraphics();
 	if (generator->initialise())
 	{
 		name = generator->getName().c_str();
@@ -54,7 +56,7 @@ void ConverterTester::populateGenerators()
 		m_mapGenerators[name] = generator;
 	}
 
-	generator = new RealtimeGraphics();
+	generator = new ColourTest();
 	if (generator->initialise())
 	{
 		name = generator->getName().c_str();
@@ -146,14 +148,8 @@ void ConverterTester::populateConverters()
 
 	// Closest letter with black background
 	QString name;
-	Converter *converter = new Nearest();
-	if (converter->initialise())
-	{
-		name = converter->getName().c_str();
-		ui.converterComboBox->addItem(name);
-		m_mapConverters[name] = converter;
-	}
-
+	Converter *converter;
+	
 	converter = new FullBlock();
 	if (converter->initialise())
 	{
@@ -163,6 +159,14 @@ void ConverterTester::populateConverters()
 	}
 
 	converter = new HalfBlock();
+	if (converter->initialise())
+	{
+		name = converter->getName().c_str();
+		ui.converterComboBox->addItem(name);
+		m_mapConverters[name] = converter;
+	}
+
+	converter = new Nearest();
 	if (converter->initialise())
 	{
 		name = converter->getName().c_str();

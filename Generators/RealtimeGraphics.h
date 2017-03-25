@@ -2,6 +2,7 @@
 #include "Generator.h"
 #include "Graphics.h"
 #include "Texture.h"
+#include "Vector.h"
 
 #include <vector>
 
@@ -31,6 +32,8 @@ private:
 	void				testDrawFatLines();
 	void				testSolidPolygon();
 	void				testRotatingSolidPolygon(float time);
+
+	void				projectPoints(std::vector<Vertex4f> &vecPoints, Point<int> eye, float zplane, std::vector<Point<int>> &vecOutput);
 
 	Graphics			*m_pGraphics{ nullptr };
 	Texture				m_Texture;
