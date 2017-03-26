@@ -2,12 +2,12 @@
 
 class Matrix4f;
 
-class Vertex4f
+class Vector4f
 {
 public:
-	Vertex4f();
-	Vertex4f(float x, float y, float z, float w);
-	~Vertex4f();
+	Vector4f();
+	Vector4f(float x, float y, float z, float w);
+	~Vector4f();
 
 	void	set(float x, float y, float z, float w);
 	float	x() const { return m_Data[0]; }
@@ -15,8 +15,12 @@ public:
 	float	z() const { return m_Data[2]; }
 	float	w() const { return m_Data[3]; }
 
-	Vertex4f operator*(const Matrix4f &m);
-	Vertex4f operator+(const Vertex4f &v);
+	Vector4f operator*(const Matrix4f &m);
+	Vector4f operator+(const Vector4f &v);
+	Vector4f operator-(const Vector4f &v);
+	float	 dotProduct(const Vector4f &v) const;
+	Vector4f crossProduct(const Vector4f &v) const;
+
 
 private:
 	float	m_Data[4] = { 0.0f };
