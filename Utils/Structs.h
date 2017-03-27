@@ -3,10 +3,13 @@
 
 struct RGBA
 {
-	unsigned char R;
-	unsigned char G;
-	unsigned char B;
-	unsigned char A;
+	unsigned char R{ 0 };
+	unsigned char G{ 0 };
+	unsigned char B{ 0 };
+	unsigned char A{ 0 };
+
+	RGBA() {};
+	RGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a) :R(r), G(g), B(b), A(a) {}
 };
 
 static std::vector<RGBA> vecColours{

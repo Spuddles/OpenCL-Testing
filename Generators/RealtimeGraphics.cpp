@@ -142,9 +142,9 @@ void RealtimeGraphics::testSolidPolygon()
 	m_pGraphics->drawSolidPolygon(points, rgba);
 }
 
-void RealtimeGraphics::projectPoints(std::vector<Vertex4f> &vecPoints, Point<int> eye, float zplane, std::vector<Point<int>> &vecOutput)
+void RealtimeGraphics::projectPoints(std::vector<Vector4f> &vecPoints, Point<int> eye, float zplane, std::vector<Point<int>> &vecOutput)
 {
-	for (Vertex4f v : vecPoints)
+	for (Vector4f v : vecPoints)
 	{
 		float scale = zplane / v.z();
 
@@ -172,15 +172,15 @@ void RealtimeGraphics::testRotatingSolidPolygon(float time)
 	m.rotateY(time);
 	m.transform(300, 200, 800);
 
-	std::vector<Vertex4f>	vecPoints;
+	std::vector<Vector4f>	vecPoints;
 	// Rotate the points
 	for (auto &p : points)
 	{
 		float x = p.x;
 		float y = p.y;
 
-		Vertex4f v(x,y,0.0f,1.0f);
-		Vertex4f v2 = v * m;
+		Vector4f v(x,y,0.0f,1.0f);
+		Vector4f v2 = v * m;
 
 		vecPoints.push_back(v2);
 	}

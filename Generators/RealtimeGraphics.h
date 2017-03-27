@@ -33,7 +33,7 @@ private:
 	void				testSolidPolygon();
 	void				testRotatingSolidPolygon(float time);
 
-	void				projectPoints(std::vector<Vertex4f> &vecPoints, Point<int> eye, float zplane, std::vector<Point<int>> &vecOutput);
+	void				projectPoints(std::vector<Vector4f> &vecPoints, Point<int> eye, float zplane, std::vector<Point<int>> &vecOutput);
 
 	Graphics			*m_pGraphics{ nullptr };
 	Texture				m_Texture;

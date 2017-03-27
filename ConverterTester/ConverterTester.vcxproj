@@ -157,6 +157,7 @@
     <ClCompile Include="..\Generators\BounceImage.cpp" />
     <ClCompile Include="..\Generators\ColourTest.cpp" />
     <ClCompile Include="..\Generators\RealtimeGraphics.cpp" />
+    <ClCompile Include="..\Generators\Starfield.cpp" />
     <ClCompile Include="..\Generators\StaticImage.cpp" />
     <ClCompile Include="convertertester.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_convertertester.cpp">
@@ -234,6 +235,7 @@
     <ClInclude Include="..\Generators\ColourTest.h" />
     <ClInclude Include="..\Generators\Generator.h" />
     <ClInclude Include="..\Generators\RealtimeGraphics.h" />
+    <ClInclude Include="..\Generators\Starfield.h" />
     <ClInclude Include="..\Generators\StaticImage.h" />
     <ClInclude Include="GeneratedFiles\ui_convertertester.h" />
   </ItemGroup>

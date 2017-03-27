@@ -36,7 +36,7 @@ private:
 	unsigned int	m_Height;
 
 	RGBA			*m_Bitmap{ nullptr };
-	RGBA			m_DefaultColour{ 0 };
+	RGBA			m_DefaultColour;
 
 	std::vector<std::pair<int, float>>	m_LeftEdge;
 	std::vector<std::pair<int, float>>	m_RightEdge;

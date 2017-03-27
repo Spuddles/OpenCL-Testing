@@ -41,7 +41,7 @@ bool FullBlock::convert(RGBA *input, CHAR_INFO *output)
 {
 	for (int i = 0; i < 80*50; i++)
 	{
-		RGBA image[8 * 8] = { 0 };
+		RGBA image[8 * 8];
 
 		int x = i % 80;
 		int y = i / 80;
